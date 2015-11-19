@@ -39,6 +39,6 @@ void Entity::draw()
 	}
 	else
 	{
-		cout <<  "This body has not yet been configured." << endl;
+		cout << type << " has not yet been configured." << endl;
 	}
 }

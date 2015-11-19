@@ -1,23 +1,24 @@
 /*
- * Planet.cpp
+ * Asteroid.cpp
  *
  *  Created on: Nov 19, 2015
  *      Author: andres
  */
 
-#include "Planet.h"
+#include "Asteroid.h"
 
 const float SCALE = 30.0;
 
-Planet::Planet(b2World* world, RenderWindow* window) : Entity(world, window){
-	this->type = "Planet";
+Asteroid::Asteroid(b2World* world, RenderWindow* window) : Entity(world, window){
+	this->type = "Asteroid";
+
 }
 
-Planet::~Planet(){
+Asteroid::~Asteroid() {
 	// TODO Auto-generated destructor stub
 }
 
-void Planet::configure(float x, float y, float mass, float size, string texturePath)
+void Asteroid::configure(float x, float y, float mass, float size, string texturePath)
 {
 	x/=SCALE;
 	y/=SCALE;
@@ -31,12 +32,12 @@ void Planet::configure(float x, float y, float mass, float size, string textureP
 
 	//Body definitions
 	bodyDef.position = b2Vec2(x, y);
-	bodyDef.type = b2_staticBody;
+	bodyDef.type = b2_dynamicBody;
 	body = world->CreateBody(&bodyDef);
 
 	//Shape definitions
 	b2CircleShape planetShape;
-	planetShape.m_radius = size;
+	planetShape.m_radius = (texture.getSize().x/2)/SCALE;
 
 	//Fixture definitions
 	fixtureDef.shape = &planetShape;
@@ -44,3 +45,4 @@ void Planet::configure(float x, float y, float mass, float size, string textureP
 
 	drawReady = true;
 }
+
