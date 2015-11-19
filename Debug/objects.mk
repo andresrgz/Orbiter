@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lsfml-system -lsfml-window -lsfml-graphics
+LIBS := -lsfml-system -lsfml-window -lsfml-graphics -lBox2D
 
