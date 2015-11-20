@@ -31,7 +31,7 @@ public:
 	Entity(b2World* world, RenderWindow* window);
 	virtual ~Entity();
 	b2Body* getBody();
-	virtual void configure(float x, float y, float mass, float size, string texturePath) = 0;
+	virtual void configure(float x, float y, float mass, string texturePath) = 0;
 	void draw();
 
 };

@@ -13,6 +13,7 @@
 #include "Entities/Entity.h"
 #include "Entities/Planet.h"
 #include "Entities/Asteroid.h"
+#include <vector>
 
 using namespace std;
 using namespace sf;
@@ -26,15 +27,20 @@ int main()
 	window.setFramerateLimit(60);
 
 	//World settings
-	b2Vec2 gravity(0.0f,9.8f);
+	b2Vec2 gravity(0.0f, 0.0f);
 	b2World world(gravity);
 
-	Planet planet(&world, &window);
-	planet.configure(window.getSize().x/2.f, window.getSize().y/2.f, 10.f, 100.f, "assets/planets/Planet-8.png");
-	planet.setScale(0.35f, 0.35f);
+	vector<Entity*> entities;
 
-	Asteroid asteroid(&world, &window);
-	asteroid.configure(350.f, 0.f, 10.f, 10.f, "assets/asteroid.png");
+	entities.push_back(new Planet(&world, &window));
+	entities[0]->setScale(0.15f, 0.15f);
+	entities[0]->configure(window.getSize().x/2.f, window.getSize().y/2.f, 1000000000.f, "assets/planets/Planet-8.png");
+
+	entities.push_back(new Asteroid(&world, &window));
+	entities[1]->configure(0.f, 0.f, 100.f, "assets/asteroid.png");
+
+	b2Vec2 force(100.f, 0.f);
+	entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), false);
 
 	while(window.isOpen())
 	{
@@ -46,10 +52,11 @@ int main()
 		}
 
 		world.Step(1/60.f, 8, 3);
+		((Asteroid*)entities[1])->step(&entities);
 
 		window.clear(Color::Black);
-		planet.draw();
-		asteroid.draw();
+		entities[0]->draw();
+		entities[1]->draw();
 		window.display();
 	}
 

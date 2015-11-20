@@ -9,12 +9,16 @@
 #define ENTITIES_ASTEROID_H_
 
 #include "Entity.h"
+#include "Planet.h"
+#include <math.h>
+#include <vector>
 
 class Asteroid : public Entity{
 public:
 	Asteroid(b2World* world, RenderWindow* window);
 	virtual ~Asteroid();
-	void configure(float x, float y, float mass, float size, string texturePath);
+	void configure(float x, float y, float mass, string texturePath);
+	void step(vector<Entity*>* entities);
 };
 
 #endif /* ENTITIES_ASTEROID_H_ */

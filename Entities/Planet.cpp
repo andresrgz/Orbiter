@@ -17,11 +17,10 @@ Planet::~Planet(){
 	// TODO Auto-generated destructor stub
 }
 
-void Planet::configure(float x, float y, float mass, float size, string texturePath)
+void Planet::configure(float x, float y, float mass, string texturePath)
 {
 	x/=SCALE;
 	y/=SCALE;
-	size/=SCALE;
 
 	//Properties
 	this->mass = mass;
@@ -36,7 +35,7 @@ void Planet::configure(float x, float y, float mass, float size, string textureP
 
 	//Shape definitions
 	b2CircleShape planetShape;
-	planetShape.m_radius = size;
+	planetShape.m_radius = ((texture.getSize().x*this->getScale().x)/2)/SCALE;
 
 	//Fixture definitions
 	fixtureDef.shape = &planetShape;

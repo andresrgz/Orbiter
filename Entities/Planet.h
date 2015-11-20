@@ -14,7 +14,7 @@ class Planet : public Entity{
 public:
 	Planet(b2World* world, RenderWindow* window);
 	virtual ~Planet();
-	void configure(float x, float y, float mass, float size, string texturePath);
+	void configure(float x, float y, float mass, string texturePath);
 };
 
 #endif /* ENTITIES_PLANET_H_ */
