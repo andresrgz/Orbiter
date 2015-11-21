@@ -15,7 +15,6 @@ class Asteroid : public Entity{
 public:
 	Asteroid(float x, float y, float scale, string texturePath);
 	virtual ~Asteroid();
-	void step();
 };
 
 #endif /* ENTITIES_ASTEROID_H_ */

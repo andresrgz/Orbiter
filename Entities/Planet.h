@@ -17,6 +17,7 @@ public:
 	virtual ~Planet();
 	void setGravityForce(float gravityForce);
 	float getGravityForce();
+	void step();
 };
 
 #endif /* ENTITIES_PLANET_H_ */

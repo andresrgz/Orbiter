@@ -32,6 +32,7 @@ public:
 	Entity(float x, float y, float scale, string texturePath);
 	virtual ~Entity();
 	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr);
+	string getType();
 	b2Body* getBody();
 	void draw();
 };

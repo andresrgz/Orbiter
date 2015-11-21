@@ -35,7 +35,7 @@ int main()
 
 	float planetX = window.getSize().x/2.f;
 	float planetY = window.getSize().y/2.f;
-	entities.push_back(new Planet(planetX, planetY, 0.25f, "assets/planets/Planet-8.png"));
+	entities.push_back(new Planet(planetX, planetY, 0.25f, "assets/planet.png"));
 	((Planet*)entities[0])->setGravityForce(500.0f);
 
 	entities.push_back(new Asteroid(100.0f, 100.0f, 1.0f, "assets/asteroid.png"));
@@ -66,14 +66,12 @@ int main()
 		{
 			//Logic
 			world.Step(1/60.f, 8, 3);
-			((Asteroid*)entities[1])->step();
-			((Asteroid*)entities[2])->step();
+			((Planet*)entities[0])->step();
 
 			//Drawing
 			window.clear(Color::Black);
-			entities[0]->draw();
-			entities[1]->draw();
-			entities[2]->draw();
+			for(unsigned int i = 0; i < entities.size(); i++)
+				entities[i]->draw();
 			window.display();
 		}
 	}

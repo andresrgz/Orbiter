@@ -37,6 +37,11 @@ void Entity::setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entit
 	entities = entitiesPtr;
 }
 
+string Entity::getType()
+{
+	return type;
+}
+
 b2Body* Entity::getBody()
 {
 	return body;

@@ -6,17 +6,20 @@
 CPP_SRCS += \
 ../Entities/Asteroid.cpp \
 ../Entities/Entity.cpp \
-../Entities/Planet.cpp 
+../Entities/Planet.cpp \
+../Entities/Player.cpp 
 
 OBJS += \
 ./Entities/Asteroid.o \
 ./Entities/Entity.o \
-./Entities/Planet.o 
+./Entities/Planet.o \
+./Entities/Player.o 
 
 CPP_DEPS += \
 ./Entities/Asteroid.d \
 ./Entities/Entity.d \
-./Entities/Planet.d 
+./Entities/Planet.d \
+./Entities/Player.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
