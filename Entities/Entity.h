@@ -19,7 +19,6 @@ using namespace sf;
 class Entity : public Sprite{
 public:
 	string type;
-	float mass;
 	b2World* world;
 	b2Body* body;
 	RenderWindow* window;
@@ -31,7 +30,7 @@ public:
 	Entity(b2World* world, RenderWindow* window);
 	virtual ~Entity();
 	b2Body* getBody();
-	virtual void configure(float x, float y, float mass, string texturePath) = 0;
+	virtual void configure(float x, float y, string texturePath) = 0;
 	void draw();
 
 };

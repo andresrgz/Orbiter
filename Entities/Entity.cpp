@@ -14,7 +14,6 @@ Entity::Entity(b2World* world, RenderWindow* window) {
 	this->world = world;
 	this->window = window;
 	this->body = NULL;
-	this->mass = 0;
 	this->drawReady = false;
 }
 
@@ -31,8 +30,6 @@ b2Body* Entity::getBody()
 void Entity::draw()
 {
 	if(drawReady){
-		this->setTexture(texture);
-		this->setOrigin(texture.getSize().x/2.0f, texture.getSize().y/2.0f);
 		this->setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
 		this->setRotation(body->GetAngle()*180/b2_pi);
 		window->draw(*this);

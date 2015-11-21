@@ -9,24 +9,24 @@
 
 const float SCALE = 30.0;
 
-Planet::Planet(b2World* world, RenderWindow* window) : Entity(world, window){
+Planet::Planet(b2World* world, RenderWindow* window, float gravityForce) : Entity(world, window){
 	this->type = "Planet";
+	this->gravityForce = gravityForce;
 }
 
 Planet::~Planet(){
 	// TODO Auto-generated destructor stub
 }
 
-void Planet::configure(float x, float y, float mass, string texturePath)
+void Planet::configure(float x, float y, string texturePath)
 {
 	x/=SCALE;
 	y/=SCALE;
 
-	//Properties
-	this->mass = mass;
-
 	//Texture loading
 	texture.loadFromFile(texturePath);
+	this->setTexture(texture);
+	this->setOrigin(texture.getSize().x/2.0f, texture.getSize().y/2.0f);
 
 	//Body definitions
 	bodyDef.position = b2Vec2(x, y);
@@ -42,4 +42,9 @@ void Planet::configure(float x, float y, float mass, string texturePath)
 	body->CreateFixture(&fixtureDef);
 
 	drawReady = true;
+}
+
+float Planet::getGravityForce()
+{
+	return gravityForce;
 }

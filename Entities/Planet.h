@@ -12,9 +12,11 @@
 
 class Planet : public Entity{
 public:
-	Planet(b2World* world, RenderWindow* window);
+	float gravityForce;
+	Planet(b2World* world, RenderWindow* window, float gravityForce);
 	virtual ~Planet();
-	void configure(float x, float y, float mass, string texturePath);
+	void configure(float x, float y, string texturePath);
+	float getGravityForce();
 };
 
 #endif /* ENTITIES_PLANET_H_ */

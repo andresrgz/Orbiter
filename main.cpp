@@ -32,14 +32,14 @@ int main()
 
 	vector<Entity*> entities;
 
-	entities.push_back(new Planet(&world, &window));
+	entities.push_back(new Planet(&world, &window, 500.f));
 	entities[0]->setScale(0.15f, 0.15f);
-	entities[0]->configure(window.getSize().x/2.f, window.getSize().y/2.f, 10000000000.f, "assets/planets/Planet-8.png");
+	entities[0]->configure(window.getSize().x/2.f, window.getSize().y/2.f, "assets/planets/Planet-8.png");
 
 	entities.push_back(new Asteroid(&world, &window));
-	entities[1]->configure(0.f, 0.f, 100.f, "assets/asteroid.png");
+	entities[1]->configure(0.f, 0.f, "assets/asteroid.png");
 
-	b2Vec2 force(0.25f, 0.f);
+	b2Vec2 force(215.f, -15.f);
 	entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), false);
 
 	bool paused = false;
@@ -61,7 +61,7 @@ int main()
 		{
 			world.Step(1/60.f, 8, 3);
 			((Asteroid*)entities[1])->step(&entities);
-			entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), false);
+			//entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), false);
 
 			window.clear(Color::Black);
 			entities[0]->draw();
