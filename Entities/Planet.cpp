@@ -9,7 +9,7 @@
 
 const float SCALE = 30.0;
 
-Planet::Planet(b2World* world, RenderWindow* window, float gravityForce) : Entity(world, window){
+Planet::Planet(float gravityForce){
 	this->type = "Planet";
 	this->gravityForce = gravityForce;
 }

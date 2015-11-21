@@ -15,7 +15,7 @@
 
 class Asteroid : public Entity{
 public:
-	Asteroid(b2World* world, RenderWindow* window);
+	Asteroid();
 	virtual ~Asteroid();
 	void configure(float x, float y, string texturePath);
 	void step(vector<Entity*>* entities);

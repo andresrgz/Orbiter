@@ -9,7 +9,7 @@
 
 const float SCALE = 30.0;
 
-Asteroid::Asteroid(b2World* world, RenderWindow* window) : Entity(world, window){
+Asteroid::Asteroid(){
 	this->type = "Asteroid";
 
 }
@@ -62,12 +62,7 @@ void Asteroid::step(vector<Entity*>* entities)
 	float deltaY = asteroidPos.y - planetPos.y;
 
 	//Calculate angle
-	float angle;
-	if(deltaX != 0)
-		angle = atan(deltaY/deltaX);
-	else
-		angle = b2_pi/2.f;
-
+	float angle = deltaX != 0 ? atan(deltaY/deltaX) : b2_pi/2.f;
 	if(angle < 0)
 		angle*=-1;
 
@@ -84,7 +79,6 @@ void Asteroid::step(vector<Entity*>* entities)
 		forceY*=-1;
 
 	b2Vec2 gravityForce(forceX, forceY);
-
 	body->ApplyForce(gravityForce, body->GetWorldCenter(), true);
 
 	cout << "DELTA X: " << deltaX << " DELTA Y: " << deltaY << endl;

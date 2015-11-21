@@ -31,12 +31,13 @@ int main()
 	b2World world(gravity);
 
 	vector<Entity*> entities;
+	Entity::init(&world, &window);
 
-	entities.push_back(new Planet(&world, &window, 500.f));
+	entities.push_back(new Planet(500.f));
 	entities[0]->setScale(0.15f, 0.15f);
 	entities[0]->configure(window.getSize().x/2.f, window.getSize().y/2.f, "assets/planets/Planet-8.png");
 
-	entities.push_back(new Asteroid(&world, &window));
+	entities.push_back(new Asteroid());
 	entities[1]->configure(0.f, 0.f, "assets/asteroid.png");
 
 	b2Vec2 force(215.f, -15.f);

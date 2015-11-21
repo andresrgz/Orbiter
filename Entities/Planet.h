@@ -13,7 +13,7 @@
 class Planet : public Entity{
 public:
 	float gravityForce;
-	Planet(b2World* world, RenderWindow* window, float gravityForce);
+	Planet(float gravityForce);
 	virtual ~Planet();
 	void configure(float x, float y, string texturePath);
 	float getGravityForce();

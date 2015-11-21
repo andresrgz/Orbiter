@@ -17,22 +17,22 @@ using namespace std;
 using namespace sf;
 
 class Entity : public Sprite{
+protected:
+	static b2World* world;
+	static RenderWindow* window;
 public:
 	string type;
-	b2World* world;
-	b2Body* body;
-	RenderWindow* window;
 	Texture texture;
+	b2Body* body;
 	b2BodyDef bodyDef;
 	b2FixtureDef fixtureDef;
 	bool drawReady;
 	Entity();
-	Entity(b2World* world, RenderWindow* window);
 	virtual ~Entity();
+	static void init(b2World* worldPtr, RenderWindow* windowPtr);
 	b2Body* getBody();
 	virtual void configure(float x, float y, string texturePath) = 0;
 	void draw();
-
 };
 
 #endif /* ENTITY_H_ */

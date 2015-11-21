@@ -9,10 +9,11 @@
 
 const float SCALE = 30.0;
 
-Entity::Entity(b2World* world, RenderWindow* window) {
+b2World* Entity::world;
+RenderWindow* Entity::window;
+
+Entity::Entity() {
 	this->type = "Entity";
-	this->world = world;
-	this->window = window;
 	this->body = NULL;
 	this->drawReady = false;
 }
@@ -20,6 +21,12 @@ Entity::Entity(b2World* world, RenderWindow* window) {
 Entity::~Entity()
 {
 
+}
+
+void Entity::init(b2World* worldPtr, RenderWindow* windowPtr)
+{
+	world = worldPtr;
+	window = windowPtr;
 }
 
 b2Body* Entity::getBody()
