@@ -30,8 +30,9 @@ int main()
 	b2Vec2 gravity(0.0f, 0.0f);
 	b2World world(gravity);
 
-	vector<Entity*> entities;
+	//Entities
 	Entity::init(&world, &window);
+	vector<Entity*> entities;
 
 	entities.push_back(new Planet(500.f));
 	entities[0]->setScale(0.15f, 0.15f);
@@ -40,8 +41,10 @@ int main()
 	entities.push_back(new Asteroid());
 	entities[1]->configure(0.f, 0.f, "assets/asteroid.png");
 
+	//*DELETE*
 	b2Vec2 force(215.f, -15.f);
 	entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), false);
+	entities[1]->getBody()->SetAngularVelocity(10.f);
 
 	bool paused = false;
 
@@ -60,10 +63,11 @@ int main()
 
 		if(!paused)
 		{
+			//Logic
 			world.Step(1/60.f, 8, 3);
 			((Asteroid*)entities[1])->step(&entities);
-			//entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), false);
 
+			//Drawing
 			window.clear(Color::Black);
 			entities[0]->draw();
 			entities[1]->draw();

@@ -47,7 +47,6 @@ void Asteroid::configure(float x, float y, string texturePath)
 
 void Asteroid::step(vector<Entity*>* entities)
 {
-
 	//Get planet details
 	vector<Entity*> e = *entities;
 	Planet* planet = (Planet*)e[0];
