@@ -9,6 +9,8 @@
 #define ENTITY_H_
 
 #include <iostream>
+#include <vector>
+#include <math.h>
 #include <Box2D/Box2D.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -20,6 +22,7 @@ class Entity : public Sprite{
 protected:
 	static b2World* world;
 	static RenderWindow* window;
+	static vector<Entity*>* entities;
 public:
 	string type;
 	Texture texture;
@@ -28,7 +31,7 @@ public:
 	b2FixtureDef fixtureDef;
 	Entity(float x, float y, float scale, string texturePath);
 	virtual ~Entity();
-	static void init(b2World* worldPtr, RenderWindow* windowPtr);
+	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr);
 	b2Body* getBody();
 	void draw();
 };

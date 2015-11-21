@@ -30,15 +30,13 @@ Asteroid::~Asteroid() {
 	// TODO Auto-generated destructor stub
 }
 
-void Asteroid::step(vector<Entity*>* entities)
+void Asteroid::step()
 {
-	//Get planet details
-	vector<Entity*> e = *entities;
-	Planet* planet = (Planet*)e[0];
-	b2Body* planetBody = planet->getBody();
+	//Get planet from entities vector
+	Planet* planet = (Planet*)entities->at(0);
 
 	//Get planet and asteroid positions
-	b2Vec2 planetPos = planetBody->GetPosition();
+	b2Vec2 planetPos = planet->getBody()->GetPosition();
 	b2Vec2 asteroidPos = body->GetPosition();
 
 	//Calculate distance difference
@@ -56,7 +54,7 @@ void Asteroid::step(vector<Entity*>* entities)
 	float forceX = forceMagnitude*cos(angle);
 	float forceY = forceMagnitude*sin(angle);
 
-	//Calculate force's components' directions
+	//Check force's components' directions
 	if(deltaX > 0)
 		forceX*=-1;
 	if(deltaY > 0)

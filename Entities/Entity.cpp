@@ -11,6 +11,7 @@ const float SCALE = 30.0;
 
 b2World* Entity::world;
 RenderWindow* Entity::window;
+vector<Entity*>* Entity::entities;
 
 Entity::Entity(float x, float y, float scale, string texturePath) {
 	this->type = "Entity";
@@ -29,10 +30,11 @@ Entity::~Entity()
 
 }
 
-void Entity::init(b2World* worldPtr, RenderWindow* windowPtr)
+void Entity::setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr)
 {
 	world = worldPtr;
 	window = windowPtr;
+	entities = entitiesPtr;
 }
 
 b2Body* Entity::getBody()
