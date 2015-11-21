@@ -13,9 +13,9 @@
 class Planet : public Entity{
 public:
 	float gravityForce;
-	Planet(float gravityForce);
+	Planet(float x, float y, float scale, string texturePath);
 	virtual ~Planet();
-	void configure(float x, float y, string texturePath);
+	void setGravityForce(float gravityForce);
 	float getGravityForce();
 };
 

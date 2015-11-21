@@ -34,12 +34,12 @@ int main()
 	Entity::init(&world, &window);
 	vector<Entity*> entities;
 
-	entities.push_back(new Planet(500.f));
-	entities[0]->setScale(0.15f, 0.15f);
-	entities[0]->configure(window.getSize().x/2.f, window.getSize().y/2.f, "assets/planets/Planet-8.png");
+	float planetX = window.getSize().x/2.f;
+	float planetY = window.getSize().y/2.f;
+	entities.push_back(new Planet(planetX, planetY, 0.25f, "assets/planets/Planet-8.png"));
+	((Planet*)entities[0])->setGravityForce(500.0f);
 
-	entities.push_back(new Asteroid());
-	entities[1]->configure(0.f, 0.f, "assets/asteroid.png");
+	entities.push_back(new Asteroid(0.0f, 0.0f, 1.0f, "assets/asteroid.png"));
 
 	//*DELETE*
 	b2Vec2 force(215.f, -15.f);

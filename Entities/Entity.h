@@ -26,12 +26,10 @@ public:
 	b2Body* body;
 	b2BodyDef bodyDef;
 	b2FixtureDef fixtureDef;
-	bool drawReady;
-	Entity();
+	Entity(float x, float y, float scale, string texturePath);
 	virtual ~Entity();
 	static void init(b2World* worldPtr, RenderWindow* windowPtr);
 	b2Body* getBody();
-	virtual void configure(float x, float y, string texturePath) = 0;
 	void draw();
 };
 

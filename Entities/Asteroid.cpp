@@ -9,27 +9,10 @@
 
 const float SCALE = 30.0;
 
-Asteroid::Asteroid(){
+Asteroid::Asteroid(float x, float y, float scale, string texturePath) : Entity(x, y, scale, texturePath){
 	this->type = "Asteroid";
 
-}
-
-Asteroid::~Asteroid() {
-	// TODO Auto-generated destructor stub
-}
-
-void Asteroid::configure(float x, float y, string texturePath)
-{
-	x/=SCALE;
-	y/=SCALE;
-
-	//Texture loading
-	texture.loadFromFile(texturePath);
-	this->setTexture(texture);
-	this->setOrigin(texture.getSize().x/2.0f, texture.getSize().y/2.0f);
-
 	//Body definitions
-	bodyDef.position = b2Vec2(x, y);
 	bodyDef.type = b2_dynamicBody;
 	body = world->CreateBody(&bodyDef);
 
@@ -41,8 +24,10 @@ void Asteroid::configure(float x, float y, string texturePath)
 	fixtureDef.shape = &asteroidShape;
 	fixtureDef.restitution = 0.2f;
 	body->CreateFixture(&fixtureDef);
+}
 
-	drawReady = true;
+Asteroid::~Asteroid() {
+	// TODO Auto-generated destructor stub
 }
 
 void Asteroid::step(vector<Entity*>* entities)
