@@ -61,22 +61,26 @@ int main()
 			if(event.type == Event::Closed)
 				window.close();
 			if(event.type == Event::KeyPressed && event.key.code == Keyboard::Return)
-				paused = paused ? false : true;
+				paused = !paused;
 		}
 
 		if(!paused)
 		{
 			//Logic
 			world.Step(1/60.f, 8, 3);
-			((Planet*)entities[0])->step();
-			((Player*)entities[1])->move();
-
-			//Drawing
-			window.clear(Color::Black);
 			for(unsigned int i = 0; i < entities.size(); i++)
-				entities[i]->draw();
-			window.display();
+			{
+				if(entities[i]->getType() == "Planet")
+					((Planet*)entities[i])->step();
+				else if(entities[i]->getType() == "Player")
+					((Player*)entities[i])->move();
+			}
 		}
+		//Drawing
+		window.clear(Color::Black);
+		for(unsigned int i = 0; i < entities.size(); i++)
+			entities[i]->draw();
+		window.display();
 	}
 
 	return 0;
