@@ -9,6 +9,7 @@
 #define ENTITIES_PLANET_H_
 
 #include "Entity.h"
+#include "Player.h"
 
 class Planet : public Entity{
 public:

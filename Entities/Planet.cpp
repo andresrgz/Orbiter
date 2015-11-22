@@ -46,9 +46,9 @@ void Planet::step()
 	for(unsigned int i = 0; i < entities->size(); i++)
 	{
 		Entity* entity = entities->at(i);
-		if(entity->getType() != "Planet")
+		if(entity->getType() != this->type)
 		{
-			//Get planet's and this entity's positions
+			//Get planet and this entity's position
 			b2Vec2 planetPos = body->GetPosition();
 			b2Vec2 entityPos = entity->getBody()->GetPosition();
 
@@ -62,8 +62,8 @@ void Planet::step()
 				angle*=-1;
 
 			//Calculate force magnitude
-			float distance = deltaX*deltaX + deltaY*deltaY;
-			float forceMagnitude = (getGravityForce())/distance;
+			float distanceSquared = deltaX*deltaX + deltaY*deltaY;
+			float forceMagnitude = (getGravityForce())/distanceSquared;
 			float forceX = forceMagnitude*cos(angle);
 			float forceY = forceMagnitude*sin(angle);
 
@@ -76,6 +76,19 @@ void Planet::step()
 			//Apply force
 			b2Vec2 gravityForce(forceX, forceY);
 			entity->getBody()->ApplyForce(gravityForce, entity->getBody()->GetWorldCenter(), true);
+
+			//The player must face at an angle perpendicular to the force
+			if(entity->type == "Player")
+			{
+				Player* player = (Player*)entity;
+
+				float facingAngle = deltaY != 0 ? atan(-(deltaX/deltaY)) : b2_pi/2.f;
+				if(deltaY > 0)
+					facingAngle-=b2_pi;
+
+				player->setFacingAngle(facingAngle);
+				player->setJumpVector(deltaX, deltaY, angle);
+			}
 		}
 	}
 }
