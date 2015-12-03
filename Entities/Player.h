@@ -16,9 +16,10 @@ class Planet;
 
 class Player : public Entity{
 public:
-	float facingAngle;
+	int numFootContacts, frames;
 	float speed, jumpForce;
 	b2Vec2 speedVec, jumpVec;
+	b2Fixture* footSensorFixture;
 	map<string, Texture> textures;
 	Planet* currentPlanet;
 	Player(float x, float y, float scale, string texturePath);

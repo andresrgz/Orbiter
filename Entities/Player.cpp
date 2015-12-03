@@ -11,10 +11,11 @@ const float SCALE = 30.0;
 
 Player::Player(float x, float y, float scale, string texturePath) : Entity(x, y, scale, texturePath){
 	this->type = "Player";
-	this->facingAngle = 0.0f;
-	this->speed = 0.25f;
-	this->jumpForce = 1.00f;
+	this->speed = .5f;
+	this->jumpForce = 4.00f;
 	this->currentPlanet = NULL;
+	this->numFootContacts = 0;
+	this->frames = 0;
 
 	//Body definitions
 	bodyDef.type = b2_dynamicBody;
@@ -29,6 +30,13 @@ Player::Player(float x, float y, float scale, string texturePath) : Entity(x, y,
 	//Fixture definitions
 	fixtureDef.shape = &playerShape;
 	body->CreateFixture(&fixtureDef);
+
+	//Foot sensor
+	b2PolygonShape footSensorShape;
+	footSensorShape.SetAsBox(0.3, 0.3, b2Vec2(0,-2), 0);
+	fixtureDef.isSensor = true;
+	footSensorFixture = body->CreateFixture(&fixtureDef);
+	footSensorFixture->SetUserData(this);
 }
 
 Player::~Player() {
@@ -57,9 +65,6 @@ void Player::setCurrentPlanet()
 			Planet* planet = (Planet*)entity;
 			if(planet->getCurrentForce(this) > currentPlanet->getCurrentForce(this))
 				currentPlanet = planet;
-
-			cout << "Planet Force: " << planet->getCurrentForce(this) << endl;
-			cout << "Current Planet Force: " << currentPlanet->getCurrentForce(this) << endl;
 		}
 	}
 }
@@ -117,7 +122,7 @@ void Player::move()
 		body->ApplyLinearImpulse(-speedVec, body->GetWorldCenter(), true);
 	if(Keyboard::isKeyPressed(Keyboard::D))
 		body->ApplyLinearImpulse(speedVec, body->GetWorldCenter(), true);
-	if(Keyboard::isKeyPressed(Keyboard::Space))
+	if(Keyboard::isKeyPressed(Keyboard::Space) && numFootContacts >= 1)
 		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
 
 	calibrate();
