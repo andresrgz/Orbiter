@@ -11,11 +11,14 @@ const float SCALE = 30.0;
 
 Player::Player(float x, float y, float scale, string texturePath) : Entity(x, y, scale, texturePath){
 	this->type = "Player";
-	this->speed = .5f;
-	this->jumpForce = 4.00f;
+	this->maxSpeed = .5f;
+	this->jumpForce = 5.f;
 	this->currentPlanet = NULL;
 	this->numFootContacts = 0;
 	this->frames = 0;
+	this->state = "S-RIGHT";
+	this->animationRate = 5;
+	this->currentTexture = 0;
 
 	//Body definitions
 	bodyDef.type = b2_dynamicBody;
@@ -37,10 +40,42 @@ Player::Player(float x, float y, float scale, string texturePath) : Entity(x, y,
 	fixtureDef.isSensor = true;
 	footSensorFixture = body->CreateFixture(&fixtureDef);
 	footSensorFixture->SetUserData(this);
+
+	initTextures();
 }
 
 Player::~Player() {
 	// TODO Auto-generated destructor stub
+}
+
+void Player::initTextures()
+{
+
+	//Standing textures
+	textures["S-RIGHT"].push_back(new Texture());
+	textures["S-RIGHT"][0]->loadFromFile("assets/player/stand_right.png");
+
+	textures["S-LEFT"].push_back(new Texture());
+	textures["S-LEFT"][0]->loadFromFile("assets/player/stand_left.png");
+
+	//Running textures
+	loadMultiTextures("R-RIGHT", "assets/player/run_right_", 8);
+	loadMultiTextures("R-LEFT", "assets/player/run_left_", 8);
+}
+
+void Player::loadMultiTextures(string state, string path, int count)
+{
+	ostringstream currentPath;
+	for(int i = 1; i <= count; i++)
+	{
+		textures[state].push_back(new Texture());
+		currentPath << path << i << ".png";
+
+		textures[state][i-1]->loadFromFile(currentPath.str());
+
+		currentPath.str("");
+		currentPath.clear();
+	}
 }
 
 void Player::setCurrentPlanet()
@@ -101,7 +136,7 @@ void Player::calibrate()
 
 	//Apply
 	body->SetTransform(body->GetPosition(), facingAngle);
-	speedVec.Set(speed*cos(facingAngle), speed*sin(facingAngle));
+	speedVec.Set(maxSpeed*cos(facingAngle), maxSpeed*sin(facingAngle));
 
 	//Calculate jump force's components
 	float jumpX = jumpForce*cos(angle);
@@ -116,14 +151,40 @@ void Player::calibrate()
 	jumpVec.Set(jumpX, jumpY);
 }
 
+
 void Player::move()
 {
 	if(Keyboard::isKeyPressed(Keyboard::A))
+	{
+		state = "R-LEFT";
 		body->ApplyLinearImpulse(-speedVec, body->GetWorldCenter(), true);
-	if(Keyboard::isKeyPressed(Keyboard::D))
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::D))
+	{
+		state = "R-RIGHT";
 		body->ApplyLinearImpulse(speedVec, body->GetWorldCenter(), true);
+	}
+	else
+	{
+		if(state == "R-LEFT")
+			state = "S-LEFT";
+		else if(state == "R-RIGHT")
+			state = "S-RIGHT";
+	}
 	if(Keyboard::isKeyPressed(Keyboard::Space) && numFootContacts >= 1)
 		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
 
 	calibrate();
+
+	frames++;
+	if(frames >= 60)
+		frames = 0;
+
+	if(frames%animationRate == 0)
+		currentTexture++;
+
+	if(currentTexture >= textures[state].size())
+		currentTexture = 0;
+
+	this->setTexture(*(textures[state][currentTexture]));
 }

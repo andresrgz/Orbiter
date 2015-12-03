@@ -47,20 +47,20 @@ int main()
 
 	float planetX = window.getSize().x/2.f;
 	float planetY = window.getSize().y/2.f;
-	entities.push_back(new Planet(planetX, planetY, 0.25f, "assets/planet.png"));
+	entities.push_back(new Planet(planetX, planetY, 0.35f, "assets/new_planet.png"));
 	((Planet*)entities[0])->setGravityForce(1200.0f);
 
-	entities.push_back(new Asteroid(100.0f, 100.0f, 1.0f, "assets/asteroid.png"));
-	entities.push_back(new Asteroid(800.0f, 700.0f, 1.0f, "assets/asteroid.png"));
+	//entities.push_back(new Asteroid(100.0f, 100.0f, 0.75f, "assets/asteroid.png"));
+	//entities.push_back(new Asteroid(800.0f, 700.0f, 0.75f, "assets/asteroid.png"));
 	entities.push_back(new Player(planetX, planetY - 100, 1.0f, "assets/player/stand_right.png"));
 
 	//*DELETE*
 	b2Vec2 force(115.f, -15.f);
-	entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
-	entities[1]->getBody()->SetAngularVelocity(10.f);
+	//entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
+	//entities[1]->getBody()->SetAngularVelocity(10.f);
 
-	entities[2]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
-	entities[2]->getBody()->SetAngularVelocity(-15.f);
+	//entities[2]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
+	//entities[2]->getBody()->SetAngularVelocity(-15.f);
 
 	bool paused = false;
 	while(window.isOpen())
