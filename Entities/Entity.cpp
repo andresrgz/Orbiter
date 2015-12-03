@@ -20,7 +20,7 @@ Entity::Entity(float x, float y, float scale, string texturePath) {
 	this->setScale(scale, scale);
 
 	//Texture loading
-	texture.loadFromFile(texturePath);
+	this->texture.loadFromFile(texturePath);
 	this->setTexture(texture);
 	this->setOrigin(texture.getSize().x/2.0f, texture.getSize().y/2.0f);
 }

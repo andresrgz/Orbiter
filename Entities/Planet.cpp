@@ -14,16 +14,15 @@ Planet::Planet(float x, float y, float scale, string texturePath) : Entity(x, y,
 	this->gravityForce = 0;
 
 	//Body definitions
-	bodyDef.type = b2_staticBody;
-	body = world->CreateBody(&bodyDef);
+	this->bodyDef.type = b2_staticBody;
+	this->body = world->CreateBody(&bodyDef);
 
 	//Shape definitions
-	b2CircleShape planetShape;
-	planetShape.m_radius = ((texture.getSize().x*this->getScale().x)/2)/SCALE;
+	this->planetShape.m_radius = ((texture.getSize().x*this->getScale().x)/2)/SCALE;
 
 	//Fixture definitions
-	fixtureDef.shape = &planetShape;
-	body->CreateFixture(&fixtureDef);
+	this->fixtureDef.shape = &planetShape;
+	this->body->CreateFixture(&fixtureDef);
 }
 
 Planet::~Planet(){
@@ -38,6 +37,24 @@ void Planet::setGravityForce(float gravityForce)
 float Planet::getGravityForce()
 {
 	return gravityForce;
+}
+
+float Planet::getCurrentForce(Entity* entity)
+{
+	float forceMagnitude;
+
+	//Get planet and this entity's position
+	b2Vec2 planetPos = body->GetPosition();
+	b2Vec2 entityPos = entity->getBody()->GetPosition();
+
+	//Calculate distance difference
+	float deltaX = entityPos.x - planetPos.x;
+	float deltaY = entityPos.y - planetPos.y;
+	float distanceSquared = deltaX*deltaX + deltaY*deltaY;
+
+	forceMagnitude = gravityForce/distanceSquared;;
+
+	return forceMagnitude;
 }
 
 //This function allows the planet to attract all other entities.
@@ -63,7 +80,7 @@ void Planet::step()
 
 			//Calculate force magnitude
 			float distanceSquared = deltaX*deltaX + deltaY*deltaY;
-			float forceMagnitude = (getGravityForce())/distanceSquared;
+			float forceMagnitude = gravityForce/distanceSquared;
 			float forceX = forceMagnitude*cos(angle);
 			float forceY = forceMagnitude*sin(angle);
 
@@ -76,19 +93,8 @@ void Planet::step()
 			//Apply force
 			b2Vec2 gravityForce(forceX, forceY);
 			entity->getBody()->ApplyForce(gravityForce, entity->getBody()->GetWorldCenter(), true);
-
-			//The player must face at an angle perpendicular to the force
-			if(entity->type == "Player")
-			{
-				Player* player = (Player*)entity;
-
-				float facingAngle = deltaY != 0 ? atan(-(deltaX/deltaY)) : b2_pi/2.f;
-				if(deltaY > 0)
-					facingAngle-=b2_pi;
-
-				player->setFacingAngle(facingAngle);
-				player->setJumpVector(deltaX, deltaY, angle);
-			}
 		}
 	}
 }
+
+

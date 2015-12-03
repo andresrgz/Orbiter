@@ -14,6 +14,7 @@ Player::Player(float x, float y, float scale, string texturePath) : Entity(x, y,
 	this->facingAngle = 0.0f;
 	this->speed = 0.25f;
 	this->jumpForce = 1.00f;
+	this->currentPlanet = NULL;
 
 	//Body definitions
 	bodyDef.type = b2_dynamicBody;
@@ -34,18 +35,69 @@ Player::~Player() {
 	// TODO Auto-generated destructor stub
 }
 
-//Angle is set in radians.
-//The speed's components change with the facing angle.
-void Player::setFacingAngle(float facingAngle)
+void Player::setCurrentPlanet()
 {
-	this->facingAngle = facingAngle;
-	body->SetTransform(body->GetPosition(), facingAngle);
-	speedVec.Set(speed*cos(facingAngle), speed*sin(facingAngle));
+	//Gets the first planet in the entities list
+	for(unsigned int i = 0; i < entities->size(); i++)
+	{
+		Entity* entity = entities->at(i);
+		if(entity->getType() == "Planet")
+		{
+			currentPlanet = (Planet*)entity;
+			break;
+		}
+	}
+
+	//Compares distance between all the other planets
+	for(unsigned int i = 0; i < entities->size(); i++)
+	{
+		Entity* entity = entities->at(i);
+		if(entity->getType() == "Planet" && (Planet*)entity != currentPlanet)
+		{
+			Planet* planet = (Planet*)entity;
+			if(planet->getCurrentForce(this) > currentPlanet->getCurrentForce(this))
+				currentPlanet = planet;
+
+			cout << "Planet Force: " << planet->getCurrentForce(this) << endl;
+			cout << "Current Planet Force: " << currentPlanet->getCurrentForce(this) << endl;
+		}
+	}
 }
 
-//The jump vector depends on the angle of the force of gravity.
-void Player::setJumpVector(float deltaX, float deltaY, float angle)
+/*Calibrates player details such as: Rotation angle, jump vector, and speed vector
+depending on the planet.
+*/
+void Player::calibrate()
 {
+	//Check on what planet the player is currently.
+	setCurrentPlanet();
+
+	//Get player coordinates
+	float playerX = this->getPosition().x;
+	float playerY = this->getPosition().y;
+
+	//Get current planet coordinates
+	float planetX = currentPlanet->getPosition().x;
+	float planetY = currentPlanet->getPosition().y;
+
+	//Calculate the difference between the player and the planet's coordinates
+	float deltaX = playerX - planetX;
+	float deltaY = playerY - planetY;
+
+	//Calculate the angle at which the jump vector must point
+	float angle = deltaX != 0 ? atan(deltaY/deltaX) : b2_pi/2.f;
+	if(angle < 0)
+		angle*=-1;
+
+	//Calculate the angle at which the player must face
+	float facingAngle = deltaY != 0 ? atan(-(deltaX/deltaY)) : b2_pi/2.f;
+	if(deltaY > 0)
+		facingAngle-=b2_pi;
+
+	//Apply
+	body->SetTransform(body->GetPosition(), facingAngle);
+	speedVec.Set(speed*cos(facingAngle), speed*sin(facingAngle));
+
 	//Calculate jump force's components
 	float jumpX = jumpForce*cos(angle);
 	float jumpY = jumpForce*sin(angle);
@@ -59,12 +111,6 @@ void Player::setJumpVector(float deltaX, float deltaY, float angle)
 	jumpVec.Set(jumpX, jumpY);
 }
 
-//Returns angle in radians.
-float Player::getFacingAngle()
-{
-	return facingAngle;
-}
-
 void Player::move()
 {
 	if(Keyboard::isKeyPressed(Keyboard::A))
@@ -73,4 +119,6 @@ void Player::move()
 		body->ApplyLinearImpulse(speedVec, body->GetWorldCenter(), true);
 	if(Keyboard::isKeyPressed(Keyboard::Space))
 		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
+
+	calibrate();
 }

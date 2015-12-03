@@ -14,10 +14,12 @@
 class Planet : public Entity{
 public:
 	float gravityForce;
+	b2CircleShape planetShape;
 	Planet(float x, float y, float scale, string texturePath);
 	virtual ~Planet();
 	void setGravityForce(float gravityForce);
 	float getGravityForce();
+	float getCurrentForce(Entity* entity);
 	void step();
 };
 

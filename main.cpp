@@ -39,20 +39,22 @@ int main()
 	entities.push_back(new Planet(planetX, planetY, 0.25f, "assets/planet.png"));
 	((Planet*)entities[0])->setGravityForce(1200.0f);
 
+	entities.push_back(new Planet(1200.f, 200.f, 0.25f, "assets/planet.png"));
+	((Planet*)entities[1])->setGravityForce(1300.0f);
+
 	//entities.push_back(new Asteroid(100.0f, 100.0f, 1.0f, "assets/asteroid.png"));
 	//entities.push_back(new Asteroid(800.0f, 700.0f, 1.0f, "assets/asteroid.png"));
 	entities.push_back(new Player(1200.0f, 200.0f, 1.0f, "assets/player/stand_right.png"));
 
 	//*DELETE*
 	b2Vec2 force(115.f, -15.f);
-	//entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
-	//entities[1]->getBody()->SetAngularVelocity(10.f);
-
 	//entities[2]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
-	//entities[2]->getBody()->SetAngularVelocity(-15.f);
+	//entities[2]->getBody()->SetAngularVelocity(10.f);
+
+	//entities[3]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
+	//entities[3]->getBody()->SetAngularVelocity(-15.f);
 
 	bool paused = false;
-
 	while(window.isOpen())
 	{
 		Event event;
@@ -63,7 +65,6 @@ int main()
 			if(event.type == Event::KeyPressed && event.key.code == Keyboard::Return)
 				paused = !paused;
 		}
-
 		if(!paused)
 		{
 			//Logic

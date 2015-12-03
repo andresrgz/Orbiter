@@ -10,6 +10,9 @@
 
 #include <map>
 #include "Entity.h"
+#include "Planet.h"
+
+class Planet;
 
 class Player : public Entity{
 public:
@@ -17,11 +20,11 @@ public:
 	float speed, jumpForce;
 	b2Vec2 speedVec, jumpVec;
 	map<string, Texture> textures;
+	Planet* currentPlanet;
 	Player(float x, float y, float scale, string texturePath);
 	virtual ~Player();
-	void setFacingAngle(float facingAngle);
-	void setJumpVector(float deltaX, float deltaY, float angle);
-	float getFacingAngle();
+	void setCurrentPlanet();
+	void calibrate();
 	void move();
 };
 
