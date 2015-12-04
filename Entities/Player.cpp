@@ -11,14 +11,14 @@ const float SCALE = 30.0;
 
 Player::Player(float x, float y, float scale, string texturePath) : Entity(x, y, scale, texturePath){
 	this->type = "Player";
+
 	this->maxSpeed = .5f;
 	this->jumpForce = 5.f;
+
 	this->currentPlanet = NULL;
 	this->numFootContacts = 0;
-	this->frames = 0;
+
 	this->state = "S-RIGHT";
-	this->animationRate = 5;
-	this->currentTexture = 0;
 
 	//Body definitions
 	bodyDef.type = b2_dynamicBody;
@@ -159,7 +159,7 @@ void Player::move()
 		state = "R-LEFT";
 		body->ApplyLinearImpulse(-speedVec, body->GetWorldCenter(), true);
 	}
-	else if(Keyboard::isKeyPressed(Keyboard::D))
+	else if(Keyboard::isKeyPressed(Keyboard::D) )
 	{
 		state = "R-RIGHT";
 		body->ApplyLinearImpulse(speedVec, body->GetWorldCenter(), true);
@@ -171,20 +171,9 @@ void Player::move()
 		else if(state == "R-RIGHT")
 			state = "S-RIGHT";
 	}
-	if(Keyboard::isKeyPressed(Keyboard::Space) && numFootContacts >= 1)
+	if((Keyboard::isKeyPressed(Keyboard::Space) || Keyboard::isKeyPressed(Keyboard::W))  && numFootContacts >= 1)
 		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
 
 	calibrate();
-
-	frames++;
-	if(frames >= 60)
-		frames = 0;
-
-	if(frames%animationRate == 0)
-		currentTexture++;
-
-	if(currentTexture >= textures[state].size())
-		currentTexture = 0;
-
-	this->setTexture(*(textures[state][currentTexture]));
+	startAnimation();
 }

@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../Entities/Asteroid.cpp \
 ../Entities/Entity.cpp \
+../Entities/GameWorld.cpp \
 ../Entities/Planet.cpp \
 ../Entities/PlanetContactListener.cpp \
 ../Entities/Player.cpp 
@@ -13,6 +14,7 @@ CPP_SRCS += \
 OBJS += \
 ./Entities/Asteroid.o \
 ./Entities/Entity.o \
+./Entities/GameWorld.o \
 ./Entities/Planet.o \
 ./Entities/PlanetContactListener.o \
 ./Entities/Player.o 
@@ -20,6 +22,7 @@ OBJS += \
 CPP_DEPS += \
 ./Entities/Asteroid.d \
 ./Entities/Entity.d \
+./Entities/GameWorld.d \
 ./Entities/Planet.d \
 ./Entities/PlanetContactListener.d \
 ./Entities/Player.d 

@@ -19,6 +19,11 @@ Entity::Entity(float x, float y, float scale, string texturePath) {
 	this->bodyDef.position = b2Vec2(x/SCALE, y/SCALE);
 	this->setScale(scale, scale);
 
+	//Animation variables
+	this->frames = 0;
+	this->animationRate = 5;
+	this->currentTexture = 0;
+
 	//Texture loading
 	this->texture.loadFromFile(texturePath);
 	this->setTexture(texture);
@@ -52,4 +57,19 @@ void Entity::draw()
 	this->setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
 	this->setRotation(body->GetAngle()*180/b2_pi);
 	window->draw(*this);
+}
+
+void Entity::startAnimation()
+{
+	frames++;
+	if(frames >= 60)
+		frames = 0;
+
+	if(frames%animationRate == 0)
+		currentTexture++;
+
+	if(currentTexture >= textures[state].size())
+		currentTexture = 0;
+
+	this->setTexture(*(textures[state][currentTexture]));
 }

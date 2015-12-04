@@ -12,6 +12,7 @@
 #include <SFML/System.hpp>
 #include <Box2D/Box2D.h>
 
+#include "Entities/GameWorld.h"
 #include "Entities/Entity.h"
 #include "Entities/Planet.h"
 #include "Entities/Asteroid.h"
@@ -40,27 +41,22 @@ int main()
 	Sprite background;
 	background.setTexture(backgroundTexture);
 
+	//Menu
+
 
 	//Entities
 	vector<Entity*> entities;
 	Entity::setContext(&world, &window, &entities);
+	GameWorld gameWorld(&entities);
 
+	//Planets
 	float planetX = window.getSize().x/2.f;
 	float planetY = window.getSize().y/2.f;
-	entities.push_back(new Planet(planetX, planetY, 0.35f, "assets/new_planet.png"));
-	((Planet*)entities[0])->setGravityForce(1200.0f);
+	entities.push_back(new Planet(planetX, planetY, 0.25f, "assets/new_planet.png"));
+	((Planet*)entities[0])->setGravityForce(1000.0f);
 
-	//entities.push_back(new Asteroid(100.0f, 100.0f, 0.75f, "assets/asteroid.png"));
-	//entities.push_back(new Asteroid(800.0f, 700.0f, 0.75f, "assets/asteroid.png"));
+	//Player
 	entities.push_back(new Player(planetX, planetY - 100, 1.0f, "assets/player/stand_right.png"));
-
-	//*DELETE*
-	b2Vec2 force(115.f, -15.f);
-	//entities[1]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
-	//entities[1]->getBody()->SetAngularVelocity(10.f);
-
-	//entities[2]->getBody()->ApplyForce(force, entities[1]->getBody()->GetWorldCenter(), true);
-	//entities[2]->getBody()->SetAngularVelocity(-15.f);
 
 	bool paused = false;
 	while(window.isOpen())
@@ -77,6 +73,7 @@ int main()
 		{
 			//Logic
 			world.Step(1/60.f, 8, 3);
+			gameWorld.spawnAsteroids();
 			for(unsigned int i = 0; i < entities.size(); i++)
 			{
 				if(entities[i]->getType() == "Planet")

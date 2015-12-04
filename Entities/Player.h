@@ -9,7 +9,6 @@
 #define ENTITIES_PLAYER_H_
 
 #include <map>
-#include <sstream>
 #include "Entity.h"
 #include "Planet.h"
 
@@ -17,13 +16,10 @@ class Planet;
 
 class Player : public Entity{
 public:
-	int numFootContacts, frames, animationRate;
-	unsigned int currentTexture;
+	int numFootContacts;
 	float maxSpeed, jumpForce;
-	string state;
 	b2Vec2 speedVec, jumpVec;
 	b2Fixture* footSensorFixture;
-	map<string, vector<Texture*> > textures;
 	Planet* currentPlanet;
 	Player(float x, float y, float scale, string texturePath);
 	virtual ~Player();

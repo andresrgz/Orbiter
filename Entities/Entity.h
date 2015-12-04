@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <sstream>
 #include <Box2D/Box2D.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -26,12 +27,16 @@ protected:
 public:
 	string type;
 	Texture texture;
+	string state;
+	unsigned int animationRate, frames, currentTexture;
+	map<string, vector<Texture*> > textures;
 	b2Body* body;
 	b2BodyDef bodyDef;
 	b2FixtureDef fixtureDef;
 	Entity(float x, float y, float scale, string texturePath);
 	virtual ~Entity();
 	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr);
+	void startAnimation();
 	string getType();
 	b2Body* getBody();
 	void draw();
