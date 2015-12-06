@@ -12,8 +12,9 @@ const float SCALE = 30.0;
 Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, scale, textureKey){
 	this->type = "Player";
 
-	this->maxSpeed = .5f;
-	this->jumpForce = 5.f;
+	this->movementForce = 35.f;
+	this->maxSpeed = 12.0f;
+	this->jumpForce = 7.f;
 
 	this->currentPlanet = NULL;
 	this->numFootContacts = 0;
@@ -34,7 +35,7 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 
 	//Foot sensor
 	b2PolygonShape footSensorShape;
-	footSensorShape.SetAsBox(0.3, 0.3, b2Vec2(0,-2), 0);
+	footSensorShape.SetAsBox(0.3, 0.3, b2Vec2(0,-3), 0);
 	fixtureDef.isSensor = true;
 	footSensorFixture = body->CreateFixture(&fixtureDef);
 	footSensorFixture->SetUserData(this);
@@ -67,10 +68,7 @@ void Player::setCurrentPlanet()
 			b2Vec2 planetForce = planet->getCurrentForce(this);
 			b2Vec2 currentPlanetForce = currentPlanet->getCurrentForce(this);
 
-			float planetForceMagnitude = sqrt(planetForce.x*planetForce.x + planetForce.y*planetForce.y);
-			float currentPlanetForceMagnitude = sqrt(currentPlanetForce.x*currentPlanetForce.x + currentPlanetForce.y*currentPlanetForce.y);
-
-			if(planetForceMagnitude > currentPlanetForceMagnitude)
+			if(planetForce.Length() > currentPlanetForce.Length())
 				currentPlanet = planet;
 		}
 	}
@@ -93,7 +91,7 @@ void Player::calibrate()
 		jumpAngle*=-1;
 
 	//Calculate the angle at which the player must face
-	float facingAngle = forceY != 0 ? atan(-(forceX/forceY)) : b2_pi/2.f;
+	float facingAngle = forceY != 0 ? atan(-(forceX/forceY)) : -b2_pi/2.f;
 	if(forceY < 0)
 		facingAngle-=b2_pi;
 
@@ -109,32 +107,35 @@ void Player::calibrate()
 
 	//Apply
 	body->SetTransform(body->GetPosition(), facingAngle);
-	speedVec.Set(maxSpeed*cos(facingAngle), maxSpeed*sin(facingAngle));
+	movementVec.Set(movementForce*cos(facingAngle), movementForce*sin(facingAngle));
 	jumpVec.Set(jumpX, jumpY);
 }
 
 
 void Player::move()
 {
+	calibrate();
+
+	if(textureKey == "R-LEFT")
+		textureKey = "S-LEFT";
+	else if(textureKey == "R-RIGHT")
+		textureKey = "S-RIGHT";
+
 	if(Keyboard::isKeyPressed(Keyboard::A))
 	{
 		textureKey = "R-LEFT";
-		body->ApplyLinearImpulse(-speedVec, body->GetWorldCenter(), true);
+		if(body->GetLinearVelocity().Length() < maxSpeed)
+			body->ApplyForce(-movementVec, body->GetWorldCenter(), true);
 	}
 	else if(Keyboard::isKeyPressed(Keyboard::D) )
 	{
 		textureKey = "R-RIGHT";
-		body->ApplyLinearImpulse(speedVec, body->GetWorldCenter(), true);
+		if(body->GetLinearVelocity().Length() < maxSpeed)
+			body->ApplyForce(movementVec, body->GetWorldCenter(), true);
 	}
-	else
-	{
-		if(textureKey == "R-LEFT")
-			textureKey = "S-LEFT";
-		else if(textureKey == "R-RIGHT")
-			textureKey = "S-RIGHT";
-	}
-	if((Keyboard::isKeyPressed(Keyboard::Space) || Keyboard::isKeyPressed(Keyboard::W))  && numFootContacts >= 1)
-		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
 
-	calibrate();
+	if((Keyboard::isKeyPressed(Keyboard::Space) || Keyboard::isKeyPressed(Keyboard::W)) && numFootContacts >= 1)
+	{
+		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
+	}
 }

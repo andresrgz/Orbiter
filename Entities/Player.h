@@ -16,8 +16,8 @@ class Planet;
 class Player : public Entity{
 public:
 	int numFootContacts;
-	float maxSpeed, jumpForce;
-	b2Vec2 speedVec, jumpVec;
+	float movementForce, maxSpeed, jumpForce;
+	b2Vec2 movementVec, jumpVec;
 	b2Fixture* footSensorFixture;
 	Planet* currentPlanet;
 	Player(float x, float y, float scale, string textureKey);
