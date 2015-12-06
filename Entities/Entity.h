@@ -24,19 +24,20 @@ protected:
 	static b2World* world;
 	static RenderWindow* window;
 	static vector<Entity*>* entities;
+	static map<string, vector<Texture*> > textures;
 public:
 	string type;
-	Texture texture;
-	string state;
+	string textureKey;
 	unsigned int animationRate, frames, currentTexture;
-	map<string, vector<Texture*> > textures;
 	b2Body* body;
 	b2BodyDef bodyDef;
 	b2FixtureDef fixtureDef;
-	Entity(float x, float y, float scale, string texturePath);
+	Entity(float x, float y, float scale, string textureKey);
 	virtual ~Entity();
 	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr);
-	void startAnimation();
+	static void initTextures();
+	static void addTexture(string textureKey, string path);
+	static void addTextures(string textureKey, string path, int count);
 	string getType();
 	b2Body* getBody();
 	void draw();

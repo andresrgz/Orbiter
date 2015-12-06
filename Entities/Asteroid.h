@@ -13,7 +13,7 @@
 
 class Asteroid : public Entity{
 public:
-	Asteroid(float x, float y, float scale, string texturePath);
+	Asteroid(float x, float y, float scale, string textureKey);
 	virtual ~Asteroid();
 };
 
