@@ -26,9 +26,12 @@ Entity::Entity(float x, float y, float scale, string textureKey) {
 	this->currentTexture = 0;
 
 	//Textures initialization
-	initTextures();
+	if(textures.empty())
+		initTextures();
+
 	this->textureKey = textureKey;
 	this->setTexture(*(textures[textureKey][currentTexture]));
+	this->setOrigin(getTexture()->getSize().x/2, getTexture()->getSize().y/2);
 }
 
 Entity::~Entity()
@@ -51,27 +54,6 @@ string Entity::getType()
 b2Body* Entity::getBody()
 {
 	return body;
-}
-
-void Entity::draw()
-{
-	frames++;
-	if(frames >= 60)
-		frames = 0;
-
-	if(frames%animationRate == 0)
-		currentTexture++;
-
-	if(currentTexture >= textures[textureKey].size())
-		currentTexture = 0;
-
-	this->setTexture(*(textures[textureKey][currentTexture]));
-	this->setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
-	this->setRotation(body->GetAngle()*180/b2_pi);
-	window->draw(*this);
-
-	cout << "X: " << this->getPosition().x << endl;
-	cout << "Y: " << this->getPosition().y << endl;
 }
 
 void Entity::initTextures()
@@ -114,4 +96,25 @@ void Entity::addTextures(string textureKey, string path, int count)
 		currentPath.str("");
 		currentPath.clear();
 	}
+}
+
+void Entity::draw()
+{
+	frames++;
+	if(frames%animationRate == 0)
+	{
+		currentTexture++;
+		frames = 0;
+	}
+
+	if(currentTexture >= textures[textureKey].size())
+		currentTexture = 0;
+
+	this->setTexture(*(textures[textureKey][currentTexture]));
+	this->setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
+	this->setRotation(body->GetAngle()*180/b2_pi);
+	window->draw(*this);
+
+	//cout << "X: " << this->getPosition().x << endl;
+	//cout << "Y: " << this->getPosition().y << endl;
 }
