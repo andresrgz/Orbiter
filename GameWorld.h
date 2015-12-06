@@ -27,6 +27,7 @@ public:
 	GameWorld(vector<Entity*>* entities);
 	virtual ~GameWorld();
 	void spawnAsteroids();
+	void clean();
 };
 
 #endif /* GAMEWORLD_H_ */

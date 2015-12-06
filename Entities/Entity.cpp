@@ -36,7 +36,7 @@ Entity::Entity(float x, float y, float scale, string textureKey) {
 
 Entity::~Entity()
 {
-
+	world->DestroyBody(body);
 }
 
 void Entity::setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr)

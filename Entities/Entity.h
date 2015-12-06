@@ -20,6 +20,10 @@ using namespace std;
 using namespace sf;
 
 class Entity : public Sprite{
+private:
+	static void initTextures();
+	static void addTexture(string textureKey, string path);
+	static void addTextures(string textureKey, string path, int count);
 protected:
 	static b2World* world;
 	static RenderWindow* window;
@@ -35,9 +39,6 @@ public:
 	Entity(float x, float y, float scale, string textureKey);
 	virtual ~Entity();
 	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr);
-	static void initTextures();
-	static void addTexture(string textureKey, string path);
-	static void addTextures(string textureKey, string path, int count);
 	string getType();
 	b2Body* getBody();
 	void draw();
