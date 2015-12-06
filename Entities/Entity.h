@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <vector>
+#include <list>
 #include <math.h>
 #include <sstream>
 #include <Box2D/Box2D.h>
@@ -27,7 +28,7 @@ private:
 protected:
 	static b2World* world;
 	static RenderWindow* window;
-	static vector<Entity*>* entities;
+	static list<Entity*>* entities;
 	static map<string, vector<Texture*> > textures;
 public:
 	string type;
@@ -38,7 +39,7 @@ public:
 	b2FixtureDef fixtureDef;
 	Entity(float x, float y, float scale, string textureKey);
 	virtual ~Entity();
-	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr);
+	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, list<Entity*>* entitiesPtr);
 	string getType();
 	b2Body* getBody();
 	void draw();

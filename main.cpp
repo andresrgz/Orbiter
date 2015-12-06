@@ -5,7 +5,7 @@
  *      Author: andres
  */
 #include <iostream>
-#include <vector>
+#include <list>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -42,7 +42,7 @@ int main()
 	background.setTexture(backgroundTexture);
 
 	//Entities
-	vector<Entity*> entities;
+	list<Entity*> entities;
 	Entity::setContext(&world, &window, &entities);
 	GameWorld gameWorld(&entities);
 
@@ -72,19 +72,20 @@ int main()
 			//Logic
 			world.Step(1/60.f, 8, 3);
 			gameWorld.spawnAsteroids();
-			for(unsigned int i = 0; i < entities.size(); i++)
+			for(list<Entity*>::iterator i = entities.begin(); i != entities.end(); i++)
 			{
-				if(entities[i]->getType() == "Planet")
-					((Planet*)entities[i])->step();
-				else if(entities[i]->getType() == "Player")
-					((Player*)entities[i])->move();
+				Entity* entity = *i;
+				if(entity->getType() == "Planet")
+					((Planet*)entity)->step();
+				else if(entity->getType() == "Player")
+					((Player*)entity)->move();
 			}
 		}
 		//Drawing
 		window.clear(Color::Black);
 		window.draw(background);
-		for(unsigned int i = 0; i < entities.size(); i++)
-			entities[i]->draw();
+		for(list<Entity*>::iterator i = entities.begin(); i != entities.end(); i++)
+			(*i)->draw();
 		window.display();
 	}
 

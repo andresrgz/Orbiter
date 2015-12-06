@@ -8,7 +8,7 @@
 #ifndef GAMEWORLD_H_
 #define GAMEWORLD_H_
 
-#include <vector>
+#include <list>
 #include <stdlib.h>
 #include <math.h>
 #include <sstream>
@@ -23,8 +23,8 @@ class GameWorld {
 public:
 	int asteroidCount, maxAsteroids;
 	float screenW, screenH;
-	vector<Entity*>* entities;
-	GameWorld(vector<Entity*>* entities);
+	list<Entity*>* entities;
+	GameWorld(list<Entity*>* entities);
 	virtual ~GameWorld();
 	void spawnAsteroids();
 	void clean();

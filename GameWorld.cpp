@@ -7,7 +7,7 @@
 
 #include "GameWorld.h"
 
-GameWorld::GameWorld(vector<Entity*>* entities) {
+GameWorld::GameWorld(list<Entity*>* entities) {
 	srand(time(NULL));
 	this->entities = entities;
 	this->asteroidCount = 0;

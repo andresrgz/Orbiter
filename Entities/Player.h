@@ -8,7 +8,6 @@
 #ifndef ENTITIES_PLAYER_H_
 #define ENTITIES_PLAYER_H_
 
-#include <map>
 #include "Entity.h"
 #include "Planet.h"
 

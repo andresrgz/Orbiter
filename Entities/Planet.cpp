@@ -60,9 +60,9 @@ float Planet::getCurrentForce(Entity* entity)
 //This function allows the planet to attract all other entities.
 void Planet::step()
 {
-	for(unsigned int i = 0; i < entities->size(); i++)
+	for(list<Entity*>::iterator i = entities->begin(); i != entities->end(); i++)
 	{
-		Entity* entity = entities->at(i);
+		Entity* entity = *i;
 		if(entity->getType() != this->type)
 		{
 			//Get planet and this entity's position

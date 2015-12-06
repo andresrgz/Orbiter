@@ -11,7 +11,7 @@ const float SCALE = 30.0;
 
 b2World* Entity::world;
 RenderWindow* Entity::window;
-vector<Entity*>* Entity::entities;
+list<Entity*>* Entity::entities;
 map<string, vector<Texture*> > Entity::textures;
 
 Entity::Entity(float x, float y, float scale, string textureKey) {
@@ -39,7 +39,7 @@ Entity::~Entity()
 	world->DestroyBody(body);
 }
 
-void Entity::setContext(b2World* worldPtr, RenderWindow* windowPtr, vector<Entity*>* entitiesPtr)
+void Entity::setContext(b2World* worldPtr, RenderWindow* windowPtr, list<Entity*>* entitiesPtr)
 {
 	world = worldPtr;
 	window = windowPtr;

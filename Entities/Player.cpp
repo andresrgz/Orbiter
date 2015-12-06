@@ -47,9 +47,9 @@ Player::~Player() {
 void Player::setCurrentPlanet()
 {
 	//Gets the first planet in the entities list
-	for(unsigned int i = 0; i < entities->size(); i++)
+	for(list<Entity*>::iterator i = entities->begin(); i != entities->end(); i++)
 	{
-		Entity* entity = entities->at(i);
+		Entity* entity = *i;
 		if(entity->getType() == "Planet")
 		{
 			currentPlanet = (Planet*)entity;
@@ -58,9 +58,9 @@ void Player::setCurrentPlanet()
 	}
 
 	//Compares distance between all the other planets
-	for(unsigned int i = 0; i < entities->size(); i++)
+	for(list<Entity*>::iterator i = entities->begin(); i != entities->end(); i++)
 	{
-		Entity* entity = entities->at(i);
+		Entity* entity = *i;
 		if(entity->getType() == "Planet" && (Planet*)entity != currentPlanet)
 		{
 			Planet* planet = (Planet*)entity;
