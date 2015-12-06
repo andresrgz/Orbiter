@@ -34,15 +34,8 @@ void Planet::setGravityForce(float gravityForce)
 	this->gravityForce = gravityForce;
 }
 
-float Planet::getGravityForce()
+b2Vec2 Planet::getCurrentForce(Entity* entity)
 {
-	return gravityForce;
-}
-
-float Planet::getCurrentForce(Entity* entity)
-{
-	float forceMagnitude;
-
 	//Get planet and this entity's position
 	b2Vec2 planetPos = body->GetPosition();
 	b2Vec2 entityPos = entity->getBody()->GetPosition();
@@ -52,9 +45,23 @@ float Planet::getCurrentForce(Entity* entity)
 	float deltaY = entityPos.y - planetPos.y;
 	float distanceSquared = deltaX*deltaX + deltaY*deltaY;
 
-	forceMagnitude = gravityForce/distanceSquared;;
+	//Calculate the reference angle at which gravity must be applied
+	float angle = deltaX != 0 ? atan(deltaY/deltaX) : b2_pi/2.f;
+	if(angle < 0)
+		angle*=-1;
 
-	return forceMagnitude;
+	//Calculate force magnitude and its components
+	float forceMagnitude = gravityForce/distanceSquared;
+	float forceX = forceMagnitude*cos(angle);
+	float forceY = forceMagnitude*sin(angle);
+
+	//Check and set force direction
+	if(deltaX > 0)
+		forceX*=-1;
+	if(deltaY > 0)
+		forceY*=-1;
+
+	return b2Vec2(forceX, forceY);
 }
 
 //This function allows the planet to attract all other entities.
@@ -64,36 +71,7 @@ void Planet::step()
 	{
 		Entity* entity = *i;
 		if(entity->getType() != this->type)
-		{
-			//Get planet and this entity's position
-			b2Vec2 planetPos = body->GetPosition();
-			b2Vec2 entityPos = entity->getBody()->GetPosition();
-
-			//Calculate distance difference
-			float deltaX = entityPos.x - planetPos.x;
-			float deltaY = entityPos.y - planetPos.y;
-
-			//Calculate angle
-			float angle = deltaX != 0 ? atan(deltaY/deltaX) : b2_pi/2.f;
-			if(angle < 0)
-				angle*=-1;
-
-			//Calculate force magnitude
-			float distanceSquared = deltaX*deltaX + deltaY*deltaY;
-			float forceMagnitude = gravityForce/distanceSquared;
-			float forceX = forceMagnitude*cos(angle);
-			float forceY = forceMagnitude*sin(angle);
-
-			//Check and set force direction
-			if(deltaX > 0)
-				forceX*=-1;
-			if(deltaY > 0)
-				forceY*=-1;
-
-			//Apply force
-			b2Vec2 gravityForce(forceX, forceY);
-			entity->getBody()->ApplyForce(gravityForce, entity->getBody()->GetWorldCenter(), true);
-		}
+			entity->getBody()->ApplyForce(getCurrentForce(entity), entity->getBody()->GetWorldCenter(), true);
 	}
 }
 

@@ -18,8 +18,7 @@ public:
 	Planet(float x, float y, float scale, string textureKey);
 	virtual ~Planet();
 	void setGravityForce(float gravityForce);
-	float getGravityForce();
-	float getCurrentForce(Entity* entity);
+	b2Vec2 getCurrentForce(Entity* entity);
 	void step();
 };
 

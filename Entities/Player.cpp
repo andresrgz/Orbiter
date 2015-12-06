@@ -57,57 +57,54 @@ void Player::setCurrentPlanet()
 		}
 	}
 
-	//Compares distance between all the other planets
 	for(list<Entity*>::iterator i = entities->begin(); i != entities->end(); i++)
 	{
 		Entity* entity = *i;
 		if(entity->getType() == "Planet" && (Planet*)entity != currentPlanet)
 		{
 			Planet* planet = (Planet*)entity;
-			if(planet->getCurrentForce(this) > currentPlanet->getCurrentForce(this))
+
+			b2Vec2 planetForce = planet->getCurrentForce(this);
+			b2Vec2 currentPlanetForce = currentPlanet->getCurrentForce(this);
+
+			float planetForceMagnitude = sqrt(planetForce.x*planetForce.x + planetForce.y*planetForce.y);
+			float currentPlanetForceMagnitude = sqrt(currentPlanetForce.x*currentPlanetForce.x + currentPlanetForce.y*currentPlanetForce.y);
+
+			if(planetForceMagnitude > currentPlanetForceMagnitude)
 				currentPlanet = planet;
 		}
 	}
 }
 
-/*Calibrates player details such as: Rotation angle, jump vector, and speed vector
-depending on the planet.
-*/
+//Calibrates player details such as: Rotation angle, jump vector, and speed vector depending on the planet.
 void Player::calibrate()
 {
 	//Check on what planet the player is currently.
 	setCurrentPlanet();
 
-	//Get player coordinates
-	float playerX = this->getPosition().x;
-	float playerY = this->getPosition().y;
+	//Get current gravity force on player
+	b2Vec2 force = currentPlanet->getCurrentForce(this);
+	float forceX = force.x;
+	float forceY = force.y;
 
-	//Get current planet coordinates
-	float planetX = currentPlanet->getPosition().x;
-	float planetY = currentPlanet->getPosition().y;
-
-	//Calculate the difference between the player and the planet's coordinates
-	float deltaX = playerX - planetX;
-	float deltaY = playerY - planetY;
-
-	//Calculate the angle at which the jump vector must point
-	float angle = deltaX != 0 ? atan(deltaY/deltaX) : b2_pi/2.f;
-	if(angle < 0)
-		angle*=-1;
+	//Calculate the reference angle at which the jump vector must point
+	float jumpAngle = forceX != 0 ? atan(forceY/forceX) : b2_pi/2.f;
+	if(jumpAngle < 0)
+		jumpAngle*=-1;
 
 	//Calculate the angle at which the player must face
-	float facingAngle = deltaY != 0 ? atan(-(deltaX/deltaY)) : b2_pi/2.f;
-	if(deltaY > 0)
+	float facingAngle = forceY != 0 ? atan(-(forceX/forceY)) : b2_pi/2.f;
+	if(forceY < 0)
 		facingAngle-=b2_pi;
 
 	//Calculate jump force's components
-	float jumpX = jumpForce*cos(angle);
-	float jumpY = jumpForce*sin(angle);
+	float jumpX = jumpForce*cos(jumpAngle);
+	float jumpY = jumpForce*sin(jumpAngle);
 
 	//Set jump force direction
-	if(deltaX < 0)
+	if(forceX > 0)
 		jumpX*=-1;
-	if(deltaY < 0)
+	if(forceY > 0)
 		jumpY*=-1;
 
 	//Apply

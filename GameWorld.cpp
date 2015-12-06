@@ -11,7 +11,7 @@ GameWorld::GameWorld(list<Entity*>* entities) {
 	srand(time(NULL));
 	this->entities = entities;
 	this->asteroidCount = 0;
-	this->maxAsteroids = 50;
+	this->maxAsteroids = 100;
 
 	this->screenW = VideoMode::getDesktopMode().width;
 	this->screenH = VideoMode::getDesktopMode().height;
