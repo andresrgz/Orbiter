@@ -12,8 +12,9 @@ const float SCALE = 30.0;
 b2World* Entity::world;
 RenderWindow* Entity::window;
 vector<Entity*>* Entity::entities;
+map<string, vector<Texture*> > Entity::textures;
 
-Entity::Entity(float x, float y, float scale, string texturePath) {
+Entity::Entity(float x, float y, float scale, string textureKey) {
 	this->type = "Entity";
 	this->body = NULL;
 	this->bodyDef.position = b2Vec2(x/SCALE, y/SCALE);
@@ -24,10 +25,10 @@ Entity::Entity(float x, float y, float scale, string texturePath) {
 	this->animationRate = 5;
 	this->currentTexture = 0;
 
-	//Texture loading
-	this->texture.loadFromFile(texturePath);
-	this->setTexture(texture);
-	this->setOrigin(texture.getSize().x/2.0f, texture.getSize().y/2.0f);
+	//Textures initialization
+	initTextures();
+	this->textureKey = textureKey;
+	this->setTexture(*(textures[textureKey][currentTexture]));
 }
 
 Entity::~Entity()
@@ -54,6 +55,17 @@ b2Body* Entity::getBody()
 
 void Entity::draw()
 {
+	frames++;
+	if(frames >= 60)
+		frames = 0;
+
+	if(frames%animationRate == 0)
+		currentTexture++;
+
+	if(currentTexture >= textures[textureKey].size())
+		currentTexture = 0;
+
+	this->setTexture(*(textures[textureKey][currentTexture]));
 	this->setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
 	this->setRotation(body->GetAngle()*180/b2_pi);
 	window->draw(*this);
@@ -62,17 +74,44 @@ void Entity::draw()
 	cout << "Y: " << this->getPosition().y << endl;
 }
 
-void Entity::startAnimation()
+void Entity::initTextures()
 {
-	frames++;
-	if(frames >= 60)
-		frames = 0;
+	/*Player Textures*/
+	//Standing
+	addTexture("S-RIGHT", "assets/player/stand_right.png");
+	addTexture("S-LEFT", "assets/player/stand_left.png");
 
-	if(frames%animationRate == 0)
-		currentTexture++;
+	//Running
+	addTextures("R-RIGHT", "assets/player/run_right_", 8);
+	addTextures("R-LEFT", "assets/player/run_left_", 8);
 
-	if(currentTexture >= textures[state].size())
-		currentTexture = 0;
+	/*Planet Textures*/
+	addTexture("Planet1", "assets/new_planet.png");
 
-	this->setTexture(*(textures[state][currentTexture]));
+	/*Asteroid Textures*/
+	addTexture("Asteroid1", "assets/asteroid_1.png");
+	addTexture("Asteroid2", "assets/asteroid_2.png");
+	addTexture("Asteroid3", "assets/asteroid_3.png");
+	addTexture("Asteroid4", "assets/asteroid_4.png");
+}
+
+void Entity::addTexture(string textureKey, string path)
+{
+	textures[textureKey].push_back(new Texture());
+	textures[textureKey][0]->loadFromFile(path);
+}
+
+void Entity::addTextures(string textureKey, string path, int count)
+{
+	ostringstream currentPath;
+	for(int i = 1; i <= count; i++)
+	{
+		textures[textureKey].push_back(new Texture());
+
+		currentPath << path << i << ".png";
+		textures[textureKey][i-1]->loadFromFile(currentPath.str());
+
+		currentPath.str("");
+		currentPath.clear();
+	}
 }

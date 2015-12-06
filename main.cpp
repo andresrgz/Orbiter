@@ -49,12 +49,12 @@ int main()
 	//Planets
 	float planetX = window.getSize().x/2.f;
 	float planetY = window.getSize().y/2.f;
-	Planet* planet = new Planet(planetX, planetY, 0.25f, "assets/new_planet.png");
+	Planet* planet = new Planet(planetX, planetY, 0.25f, "Planet1");
 	planet->setGravityForce(1000.0f);
 	entities.push_back(planet);
 
 	//Player
-	entities.push_back(new Player(planetX, planetY - 100, 1.00f, "assets/player/stand_right.png"));
+	entities.push_back(new Player(planetX, planetY - 100, 1.00f, "S-RIGHT"));
 
 	bool paused = false;
 	while(window.isOpen())

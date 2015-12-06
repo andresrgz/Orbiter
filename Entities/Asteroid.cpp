@@ -9,7 +9,7 @@
 
 const float SCALE = 30.0;
 
-Asteroid::Asteroid(float x, float y, float scale, string texturePath) : Entity(x, y, scale, texturePath){
+Asteroid::Asteroid(float x, float y, float scale, string textureKey) : Entity(x, y, scale, textureKey){
 	this->type = "Asteroid";
 
 	//Body definitions
@@ -18,7 +18,7 @@ Asteroid::Asteroid(float x, float y, float scale, string texturePath) : Entity(x
 
 	//Shape definitions
 	b2CircleShape asteroidShape;
-	asteroidShape.m_radius = ((texture.getSize().x*this->getScale().x)/2)/SCALE;
+	asteroidShape.m_radius = ((getTexture()->getSize().x*this->getScale().x)/2)/SCALE;
 
 	//Fixture definitions
 	fixtureDef.shape = &asteroidShape;

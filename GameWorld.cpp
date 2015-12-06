@@ -46,8 +46,8 @@ void GameWorld::spawnAsteroids()
 
 		/*Asteroid image*/
 		float asteroidNum = rand()%4 + 1;
-		ostringstream path;
-		path << "assets/asteroid_" << asteroidNum << ".png";
+		ostringstream textureKey;
+		textureKey << "Asteroid" << asteroidNum;
 
 		/*Force*/
 		float forceX = pow(-1, rand()%2)*(rand()%500 + 300);
@@ -61,7 +61,7 @@ void GameWorld::spawnAsteroids()
 
 		b2Vec2 force(forceX, forceY);
 
-		Asteroid* asteroid = new Asteroid(posX, posY, scale, path.str());
+		Asteroid* asteroid = new Asteroid(posX, posY, scale, textureKey.str());
 		asteroid->getBody()->ApplyForce(force, asteroid->getBody()->GetWorldCenter(), true);
 
 		entities->push_back(asteroid);

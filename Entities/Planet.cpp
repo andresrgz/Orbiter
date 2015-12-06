@@ -9,7 +9,7 @@
 
 const float SCALE = 30.0;
 
-Planet::Planet(float x, float y, float scale, string texturePath) : Entity(x, y, scale, texturePath){
+Planet::Planet(float x, float y, float scale, string textureKey) : Entity(x, y, scale, textureKey){
 	this->type = "Planet";
 	this->gravityForce = 0;
 
@@ -18,7 +18,7 @@ Planet::Planet(float x, float y, float scale, string texturePath) : Entity(x, y,
 	this->body = world->CreateBody(&bodyDef);
 
 	//Shape definitions
-	this->planetShape.m_radius = ((texture.getSize().x*this->getScale().x)/2)/SCALE;
+	this->planetShape.m_radius = ((getTexture()->getSize().x*this->getScale().x)/2)/SCALE;
 
 	//Fixture definitions
 	this->fixtureDef.shape = &planetShape;

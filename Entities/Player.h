@@ -21,10 +21,8 @@ public:
 	b2Vec2 speedVec, jumpVec;
 	b2Fixture* footSensorFixture;
 	Planet* currentPlanet;
-	Player(float x, float y, float scale, string texturePath);
+	Player(float x, float y, float scale, string textureKey);
 	virtual ~Player();
-	void initTextures();
-	void loadMultiTextures(string state, string path, int count);
 	void setCurrentPlanet();
 	void calibrate();
 	void move();
