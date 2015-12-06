@@ -134,10 +134,6 @@ void Player::calibrate()
 	if(deltaY > 0)
 		facingAngle-=b2_pi;
 
-	//Apply
-	body->SetTransform(body->GetPosition(), facingAngle);
-	speedVec.Set(maxSpeed*cos(facingAngle), maxSpeed*sin(facingAngle));
-
 	//Calculate jump force's components
 	float jumpX = jumpForce*cos(angle);
 	float jumpY = jumpForce*sin(angle);
@@ -148,6 +144,9 @@ void Player::calibrate()
 	if(deltaY < 0)
 		jumpY*=-1;
 
+	//Apply
+	body->SetTransform(body->GetPosition(), facingAngle);
+	speedVec.Set(maxSpeed*cos(facingAngle), maxSpeed*sin(facingAngle));
 	jumpVec.Set(jumpX, jumpY);
 }
 

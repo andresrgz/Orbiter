@@ -5,8 +5,8 @@
  *      Author: andres
  */
 
-#ifndef ENTITIES_GAMEWORLD_H_
-#define ENTITIES_GAMEWORLD_H_
+#ifndef GAMEWORLD_H_
+#define GAMEWORLD_H_
 
 #include <vector>
 #include <stdlib.h>
@@ -16,17 +16,17 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <Box2D/Box2D.h>
-#include "Entity.h"
-#include "Asteroid.h"
+#include "Entities/Entity.h"
+#include "Entities/Asteroid.h"
 
 class GameWorld {
 public:
 	int asteroidCount, maxAsteroids;
-	int screenW, screenH;
+	float screenW, screenH;
 	vector<Entity*>* entities;
 	GameWorld(vector<Entity*>* entities);
 	virtual ~GameWorld();
 	void spawnAsteroids();
 };
 
-#endif /* ENTITIES_GAMEWORLD_H_ */
+#endif /* GAMEWORLD_H_ */

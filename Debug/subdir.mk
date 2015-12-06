@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../GameWorld.cpp \
 ../main.cpp 
 
 OBJS += \
+./GameWorld.o \
 ./main.o 
 
 CPP_DEPS += \
+./GameWorld.d \
 ./main.d 
 
 

@@ -12,12 +12,12 @@
 #include <SFML/System.hpp>
 #include <Box2D/Box2D.h>
 
-#include "Entities/GameWorld.h"
 #include "Entities/Entity.h"
 #include "Entities/Planet.h"
 #include "Entities/Asteroid.h"
 #include "Entities/Player.h"
 #include "Entities/PlanetContactListener.h"
+#include "GameWorld.h"
 
 using namespace std;
 using namespace sf;
@@ -41,9 +41,6 @@ int main()
 	Sprite background;
 	background.setTexture(backgroundTexture);
 
-	//Menu
-
-
 	//Entities
 	vector<Entity*> entities;
 	Entity::setContext(&world, &window, &entities);
@@ -52,11 +49,12 @@ int main()
 	//Planets
 	float planetX = window.getSize().x/2.f;
 	float planetY = window.getSize().y/2.f;
-	entities.push_back(new Planet(planetX, planetY, 0.25f, "assets/new_planet.png"));
-	((Planet*)entities[0])->setGravityForce(1000.0f);
+	Planet* planet = new Planet(planetX, planetY, 0.25f, "assets/new_planet.png");
+	planet->setGravityForce(1000.0f);
+	entities.push_back(planet);
 
 	//Player
-	entities.push_back(new Player(planetX, planetY - 100, 1.0f, "assets/player/stand_right.png"));
+	entities.push_back(new Player(planetX, planetY - 100, 1.00f, "assets/player/stand_right.png"));
 
 	bool paused = false;
 	while(window.isOpen())
