@@ -114,7 +114,4 @@ void Entity::draw()
 	this->setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
 	this->setRotation(body->GetAngle()*180/b2_pi);
 	window->draw(*this);
-
-	//cout << "X: " << this->getPosition().x << endl;
-	//cout << "Y: " << this->getPosition().y << endl;
 }

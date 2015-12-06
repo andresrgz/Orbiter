@@ -72,6 +72,7 @@ int main()
 			//Logic
 			world.Step(1/60.f, 8, 3);
 			gameWorld.spawnAsteroids();
+			gameWorld.clean();
 			for(list<Entity*>::iterator i = entities.begin(); i != entities.end(); i++)
 			{
 				Entity* entity = *i;
