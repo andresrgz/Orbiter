@@ -147,17 +147,21 @@ void Player::move()
 void Player::shoot()
 {
 	float bulletForce = 100.0f;
-	float shootAngle = facingAngle - 11.3*b2_pi/180;
+	float shootAngle = facingAngle - 11.0*b2_pi/180;
 	float distanceFromPlayer = 37.0f;
-	float x_offset = distanceFromPlayer*cos(shootAngle);
-	float y_offset = distanceFromPlayer*sin(shootAngle);
+	float x_offset = 1.0f;
+	float y_offset = 1.0f;
 
 	if(textureKey == "S-LEFT" || textureKey == "R-LEFT")
 	{
-			bulletForce*=-1;
-			x_offset*=-1;
-			//y_offset*=-1;
+		shootAngle = facingAngle + 11.0*b2_pi/180;
+		bulletForce*=-1;
+		x_offset*=-1;
+		y_offset*=-1;
 	}
+
+	x_offset *= distanceFromPlayer*cos(shootAngle);
+	y_offset *= distanceFromPlayer*sin(shootAngle);
 
 	Bullet* bullet = new Bullet(getPosition().x + x_offset, getPosition().y + y_offset, 1.f, "Bullet");
 
