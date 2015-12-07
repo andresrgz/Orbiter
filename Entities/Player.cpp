@@ -15,6 +15,8 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 	this->movementForce = 35.f;
 	this->maxSpeed = 12.0f;
 	this->jumpForce = 7.f;
+	this->facingAngle = 0;
+	this->jumpAngle = 0;
 
 	this->currentPlanet = NULL;
 	this->numFootContacts = 0;
@@ -86,14 +88,14 @@ void Player::calibrate()
 	float forceY = force.y;
 
 	//Calculate the reference angle at which the jump vector must point
-	float jumpAngle = forceX != 0 ? atan(forceY/forceX) : b2_pi/2.f;
+	this->jumpAngle = forceX != 0 ? atan(forceY/forceX) : b2_pi/2.f;
 	if(jumpAngle < 0)
 		jumpAngle*=-1;
 
 	//Calculate the angle at which the player must face
-	float facingAngle = forceY != 0 ? atan(-(forceX/forceY)) : -b2_pi/2.f;
+	this->facingAngle = forceY != 0 ? atan(-(forceX/forceY)) : -b2_pi/2.f;
 	if(forceY < 0)
-		facingAngle-=b2_pi;
+		facingAngle+=b2_pi;
 
 	//Calculate jump force's components
 	float jumpX = jumpForce*cos(jumpAngle);
@@ -110,7 +112,6 @@ void Player::calibrate()
 	movementVec.Set(movementForce*cos(facingAngle), movementForce*sin(facingAngle));
 	jumpVec.Set(jumpX, jumpY);
 }
-
 
 void Player::move()
 {
@@ -134,8 +135,36 @@ void Player::move()
 			body->ApplyForce(movementVec, body->GetWorldCenter(), true);
 	}
 
-	if((Keyboard::isKeyPressed(Keyboard::Space) || Keyboard::isKeyPressed(Keyboard::W)) && numFootContacts >= 1)
+	if(Keyboard::isKeyPressed(Keyboard::W) && numFootContacts >= 1)
 	{
 		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
 	}
+
+	if(Keyboard::isKeyPressed(Keyboard::Space))
+		shoot();
+}
+
+void Player::shoot()
+{
+	float bulletForce = 100.0f;
+	float shootAngle = facingAngle - 11.3*b2_pi/180;
+	float distanceFromPlayer = 37.0f;
+	float x_offset = distanceFromPlayer*cos(shootAngle);
+	float y_offset = distanceFromPlayer*sin(shootAngle);
+
+	if(textureKey == "S-LEFT" || textureKey == "R-LEFT")
+	{
+			bulletForce*=-1;
+			x_offset*=-1;
+			//y_offset*=-1;
+	}
+
+	Bullet* bullet = new Bullet(getPosition().x + x_offset, getPosition().y + y_offset, 1.f, "Bullet");
+
+	b2Vec2 force(bulletForce*cos(facingAngle), bulletForce*sin(facingAngle));
+
+	bullet->getBody()->SetTransform(bullet->getBody()->GetPosition(), facingAngle);
+	bullet->getBody()->ApplyLinearImpulse(force, bullet->getBody()->GetWorldCenter(), true);
+
+	entities->push_back(bullet);
 }

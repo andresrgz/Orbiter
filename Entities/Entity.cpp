@@ -75,6 +75,9 @@ void Entity::initTextures()
 	addTexture("Asteroid2", "assets/asteroid_2.png");
 	addTexture("Asteroid3", "assets/asteroid_3.png");
 	addTexture("Asteroid4", "assets/asteroid_4.png");
+
+	/*Bullets*/
+	addTexture("Bullet", "assets/test_bullet.png");
 }
 
 void Entity::addTexture(string textureKey, string path)

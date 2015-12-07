@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Entities/Asteroid.cpp \
+../Entities/Bullet.cpp \
 ../Entities/Entity.cpp \
 ../Entities/Planet.cpp \
 ../Entities/PlanetContactListener.cpp \
@@ -12,6 +13,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./Entities/Asteroid.o \
+./Entities/Bullet.o \
 ./Entities/Entity.o \
 ./Entities/Planet.o \
 ./Entities/PlanetContactListener.o \
@@ -19,6 +21,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./Entities/Asteroid.d \
+./Entities/Bullet.d \
 ./Entities/Entity.d \
 ./Entities/Planet.d \
 ./Entities/PlanetContactListener.d \

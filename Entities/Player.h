@@ -10,6 +10,7 @@
 
 #include "Entity.h"
 #include "Planet.h"
+#include "Bullet.h"
 
 class Planet;
 
@@ -17,6 +18,7 @@ class Player : public Entity{
 public:
 	int numFootContacts;
 	float movementForce, maxSpeed, jumpForce;
+	float facingAngle, jumpAngle;
 	b2Vec2 movementVec, jumpVec;
 	b2Fixture* footSensorFixture;
 	Planet* currentPlanet;
@@ -25,6 +27,7 @@ public:
 	void setCurrentPlanet();
 	void calibrate();
 	void move();
+	void shoot();
 };
 
 #endif /* ENTITIES_PLAYER_H_ */
