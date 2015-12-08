@@ -10,10 +10,18 @@
 
 #include <Box2D/Box2D.h>
 #include "Entity.h"
+#include "Player.h"
+
+class Player;
 
 class Bullet : public Entity{
 public:
-	Bullet(float x, float y, float scale, string textureKey);
+	Player* owner;
+	float bulletForce, offsetAngle, angleFromPlayer, distanceFromPlayer;
+	Bullet(Player* owner);
+	void setBulletForce(float bulletForce);
+	void setDistanceFromPlayer(float distanceFromPlayer);
+	void spawn();
 	virtual ~Bullet();
 };
 

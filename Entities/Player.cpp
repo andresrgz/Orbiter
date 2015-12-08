@@ -11,12 +11,12 @@ const float SCALE = 30.0;
 
 Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, scale, textureKey){
 	this->type = "Player";
-
 	this->movementForce = 35.f;
 	this->maxSpeed = 12.0f;
 	this->jumpForce = 7.f;
 	this->facingAngle = 0;
 	this->jumpAngle = 0;
+	this->gunAngle = 11.0*b2_pi/180;
 
 	this->currentPlanet = NULL;
 	this->numFootContacts = 0;
@@ -37,7 +37,7 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 
 	//Foot sensor
 	b2PolygonShape footSensorShape;
-	footSensorShape.SetAsBox(0.3, 0.3, b2Vec2(0,-3), 0);
+	footSensorShape.SetAsBox(sizeX/4, sizeY/4, b2Vec2(0,-3), 0);
 	fixtureDef.isSensor = true;
 	footSensorFixture = body->CreateFixture(&fixtureDef);
 	footSensorFixture->SetUserData(this);
@@ -76,6 +76,31 @@ void Player::setCurrentPlanet()
 	}
 }
 
+/*First we need the facing angle from the player, then the gun angle
+is measured from the center of the player to the end of the gun, to
+keep it in global coordinates the facing angle must be added to the
+arm angle.
+
+0 degrees is the relative angle at which the gun is horizontal with respect
+to the player's body.
+*/
+void Player::setGunAngle(float relativeAngle)
+{
+	relativeAngle+=facingAngle;
+
+	if(textureKey == "S-LEFT" || textureKey == "R-LEFT")
+		relativeAngle+=9.0*b2_pi/180;
+	else
+		relativeAngle-=9.0*b2_pi/180;
+
+	this->gunAngle = relativeAngle;
+}
+
+float Player::getGunAngle()
+{
+	return gunAngle;
+}
+
 //Calibrates player details such as: Rotation angle, jump vector, and speed vector depending on the planet.
 void Player::calibrate()
 {
@@ -111,6 +136,8 @@ void Player::calibrate()
 	body->SetTransform(body->GetPosition(), facingAngle);
 	movementVec.Set(movementForce*cos(facingAngle), movementForce*sin(facingAngle));
 	jumpVec.Set(jumpX, jumpY);
+
+	setGunAngle(0);
 }
 
 void Player::move()
@@ -146,29 +173,6 @@ void Player::move()
 
 void Player::shoot()
 {
-	float bulletForce = 100.0f;
-	float shootAngle = facingAngle - 11.0*b2_pi/180;
-	float distanceFromPlayer = 37.0f;
-	float x_offset = 1.0f;
-	float y_offset = 1.0f;
-
-	if(textureKey == "S-LEFT" || textureKey == "R-LEFT")
-	{
-		shootAngle = facingAngle + 11.0*b2_pi/180;
-		bulletForce*=-1;
-		x_offset*=-1;
-		y_offset*=-1;
-	}
-
-	x_offset *= distanceFromPlayer*cos(shootAngle);
-	y_offset *= distanceFromPlayer*sin(shootAngle);
-
-	Bullet* bullet = new Bullet(getPosition().x + x_offset, getPosition().y + y_offset, 1.f, "Bullet");
-
-	b2Vec2 force(bulletForce*cos(facingAngle), bulletForce*sin(facingAngle));
-
-	bullet->getBody()->SetTransform(bullet->getBody()->GetPosition(), facingAngle);
-	bullet->getBody()->ApplyLinearImpulse(force, bullet->getBody()->GetWorldCenter(), true);
-
-	entities->push_back(bullet);
+	Bullet* bullet = new Bullet(this);
+	bullet->spawn();
 }
