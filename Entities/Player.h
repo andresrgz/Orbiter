@@ -18,15 +18,14 @@ class Player : public Entity{
 public:
 	int numFootContacts;
 	float movementForce, maxSpeed, jumpForce;
-	float facingAngle, jumpAngle, gunAngle;
+	float facingAngle, jumpAngle;
 	b2Vec2 movementVec, jumpVec;
 	b2Fixture* footSensorFixture;
 	Planet* currentPlanet;
 	Player(float x, float y, float scale, string textureKey);
 	virtual ~Player();
 	void setCurrentPlanet();
-	void setGunAngle(float relativeAngle);
-	float getGunAngle();
+	b2Vec2 getGunPosition();
 	void calibrate();
 	void move();
 	void shoot();

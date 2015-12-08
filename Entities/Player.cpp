@@ -16,7 +16,6 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 	this->jumpForce = 7.f;
 	this->facingAngle = 0;
 	this->jumpAngle = 0;
-	this->gunAngle = 11.0*b2_pi/180;
 
 	this->currentPlanet = NULL;
 	this->numFootContacts = 0;
@@ -76,29 +75,36 @@ void Player::setCurrentPlanet()
 	}
 }
 
-/*First we need the facing angle from the player, then the gun angle
-is measured from the center of the player to the end of the gun, to
-keep it in global coordinates the facing angle must be added to the
-arm angle.
-
-0 degrees is the relative angle at which the gun is horizontal with respect
-to the player's body.
-*/
-void Player::setGunAngle(float relativeAngle)
+//Gets the position of the end of the gun in b2World coordinates.
+//All angles are in radians.
+//All offset values are with respect to the player's center.
+b2Vec2 Player::getGunPosition()
 {
-	relativeAngle+=facingAngle;
+	//The distance from the tip of the gun to the center of the player.
+	float distanceFromPlayer = 45.0f;
+	float offsetAngle = facingAngle;
+	float x_offset = 1.0f;
+	float y_offset = 1.0f;
 
 	if(textureKey == "S-LEFT" || textureKey == "R-LEFT")
-		relativeAngle+=9.0*b2_pi/180;
+	{
+		offsetAngle+=9.0*b2_pi/180;
+		x_offset*=-1;
+		y_offset*=-1;
+	}
 	else
-		relativeAngle-=9.0*b2_pi/180;
+		offsetAngle-=9.0*b2_pi/180;
 
-	this->gunAngle = relativeAngle;
-}
+	x_offset *= distanceFromPlayer*cos(offsetAngle);
+	y_offset *= distanceFromPlayer*sin(offsetAngle);
 
-float Player::getGunAngle()
-{
-	return gunAngle;
+	x_offset += getPosition().x;
+	y_offset += getPosition().y;
+
+	x_offset /= SCALE;
+	y_offset /= SCALE;
+
+	return b2Vec2(x_offset, y_offset);
 }
 
 //Calibrates player details such as: Rotation angle, jump vector, and speed vector depending on the planet.
@@ -136,8 +142,6 @@ void Player::calibrate()
 	body->SetTransform(body->GetPosition(), facingAngle);
 	movementVec.Set(movementForce*cos(facingAngle), movementForce*sin(facingAngle));
 	jumpVec.Set(jumpX, jumpY);
-
-	setGunAngle(0);
 }
 
 void Player::move()

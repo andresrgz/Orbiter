@@ -49,25 +49,10 @@ void Bullet::setDistanceFromPlayer(float distanceFromPlayer)
 
 void Bullet::spawn()
 {
-	//Initialize offset coordinates in which the bullet will be positioned
-	float x_offset = 1.0f;
-	float y_offset = 1.0f;
-	offsetAngle = owner->getGunAngle();
-
-	//If the player is facing left, the offset coordinates and the force gets flipped.
 	if(owner->textureKey == "S-LEFT" || owner->textureKey == "R-LEFT")
-	{
 		bulletForce*=-1;
-		x_offset*=-1;
-		y_offset*=-1;
-	}
 
-	//Calculate the offset in each axis depending on the facing angle of the player.
-	x_offset *= distanceFromPlayer*cos(offsetAngle);
-	y_offset *= distanceFromPlayer*sin(offsetAngle);
-
-	b2Vec2 position((owner->getPosition().x + x_offset)/SCALE, (owner->getPosition().y + y_offset)/SCALE);
-	body->SetTransform(position, owner->facingAngle);
+	body->SetTransform(owner->getGunPosition(), owner->facingAngle);
 
 	b2Vec2 force(bulletForce*cos(owner->facingAngle), bulletForce*sin(owner->facingAngle));
 	body->ApplyLinearImpulse(force, body->GetWorldCenter(), true);
