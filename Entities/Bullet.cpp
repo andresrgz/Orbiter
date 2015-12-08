@@ -9,12 +9,9 @@
 
 const float SCALE = 30.0;
 
-Bullet::Bullet(Player* owner) : Entity(0.f, 0.f, 1.f, "Bullet") {
+Bullet::Bullet(Player* owner) : Entity(0.f, 0.f, 1.0f, "Bullet") {
 	this->type = "Bullet";
 	this->bulletForce = 100.0f;
-	this->offsetAngle = 0;
-	this->angleFromPlayer = 11.0*b2_pi/180;
-	this->distanceFromPlayer = 45.0f;
 	this->owner = owner;
 
 	//Body definitions
@@ -42,20 +39,14 @@ void Bullet::setBulletForce(float bulletForce)
 	this->bulletForce = bulletForce;
 }
 
-void Bullet::setDistanceFromPlayer(float distanceFromPlayer)
-{
-	this->distanceFromPlayer = distanceFromPlayer;
-}
-
 void Bullet::spawn()
 {
 	if(owner->textureKey == "S-LEFT" || owner->textureKey == "R-LEFT")
 		bulletForce*=-1;
 
-	body->SetTransform(owner->getGunPosition(), owner->facingAngle);
-
 	b2Vec2 force(bulletForce*cos(owner->facingAngle), bulletForce*sin(owner->facingAngle));
 	body->ApplyLinearImpulse(force, body->GetWorldCenter(), true);
+	body->SetTransform(owner->getGunPosition(), owner->facingAngle);
 
 	entities->push_back(this);
 }

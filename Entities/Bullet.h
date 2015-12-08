@@ -17,10 +17,9 @@ class Player;
 class Bullet : public Entity{
 public:
 	Player* owner;
-	float bulletForce, offsetAngle, angleFromPlayer, distanceFromPlayer;
+	float bulletForce;
 	Bullet(Player* owner);
 	void setBulletForce(float bulletForce);
-	void setDistanceFromPlayer(float distanceFromPlayer);
 	void spawn();
 	virtual ~Bullet();
 };
