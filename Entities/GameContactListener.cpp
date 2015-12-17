@@ -53,10 +53,22 @@ void GameContactListener::BeginContact(b2Contact* contact)
 	if(entityA->getType() == "Player" && entityB->getType() == "Asteroid")
 	{
 		((Player*)entityA)->applyDamage(((Asteroid*)entityB)->damage);
+		entityB->deleteEntity();
 	}
 	else if(entityB->getType() == "Player" && entityA->getType() == "Asteroid")
 	{
 		((Player*)entityB)->applyDamage(((Asteroid*)entityA)->damage);
+		entityA->deleteEntity();
+	}
+
+	//Contact between planet and asteroid
+	if(entityA->getType() == "Asteroid" && entityB->getType() == "Planet")
+	{
+		entityA->deleteEntity();
+	}
+	else if(entityB->getType() == "Asteroid" && entityA->getType() == "Planet")
+	{
+		entityB->deleteEntity();
 	}
 }
 

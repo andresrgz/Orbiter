@@ -10,15 +10,32 @@
 GameWorld::GameWorld(list<Entity*>* entities) {
 	srand(time(NULL));
 	this->entities = entities;
+	this->paused = false;
 	this->asteroidCount = 0;
-	this->maxAsteroids = 4;
+	this->maxAsteroids = 100;
 
 	this->screenW = VideoMode::getDesktopMode().width;
 	this->screenH = VideoMode::getDesktopMode().height;
+
+	for(list<Entity*>::iterator i = entities->begin(); i != entities->end(); i++)
+	{
+		Entity* entity = *i;
+		if(entity->getType() == "Player")
+		{
+			player = (Player*)entity;
+			break;
+		}
+	}
 }
 
 GameWorld::~GameWorld() {
 	// TODO Auto-generated destructor stub
+}
+
+void GameWorld::pause()
+{
+	paused = !paused;
+	Entity::paused = !Entity::paused;
 }
 
 void GameWorld::spawnAsteroids()

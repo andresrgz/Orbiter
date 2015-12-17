@@ -9,6 +9,7 @@
 
 const float SCALE = 30.0;
 
+bool Entity::paused = false;
 b2World* Entity::world;
 RenderWindow* Entity::window;
 list<Entity*>* Entity::entities;
@@ -113,17 +114,21 @@ void Entity::addTextures(string textureKey, string path, int count)
 
 void Entity::draw()
 {
-	frames++;
-	if(frames%animationRate == 0)
+	if(!paused)
 	{
-		currentTexture++;
-		frames = 0;
+		frames++;
+		if(frames%animationRate == 0)
+		{
+			currentTexture++;
+			frames = 0;
+		}
+
+		if(currentTexture >= textures[textureKey].size())
+			currentTexture = 0;
+
+		this->setTexture(*(textures[textureKey][currentTexture]));
 	}
 
-	if(currentTexture >= textures[textureKey].size())
-		currentTexture = 0;
-
-	this->setTexture(*(textures[textureKey][currentTexture]));
 	this->setPosition(SCALE * body->GetPosition().x, SCALE * body->GetPosition().y);
 	this->setRotation(body->GetAngle()*180/b2_pi);
 	window->draw(*this);

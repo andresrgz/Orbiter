@@ -17,15 +17,19 @@
 #include <SFML/System.hpp>
 #include <Box2D/Box2D.h>
 #include "Entities/Entity.h"
+#include "Entities/Player.h"
 #include "Entities/Asteroid.h"
 
 class GameWorld {
 public:
+	bool paused;
 	int asteroidCount, maxAsteroids;
 	float screenW, screenH;
+	Player* player;
 	list<Entity*>* entities;
 	GameWorld(list<Entity*>* entities);
 	virtual ~GameWorld();
+	void pause();
 	void spawnAsteroids();
 	void clean();
 };

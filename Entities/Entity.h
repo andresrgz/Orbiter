@@ -38,6 +38,7 @@ protected:
 	static list<Entity*>* entities;
 	static map<string, vector<Texture*> > textures;
 public:
+	static bool paused;
 	string type;
 	string textureKey;
 	unsigned int animationRate, frames, currentTexture;

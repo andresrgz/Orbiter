@@ -18,6 +18,7 @@
 #include "Entities/GameContactListener.h"
 #include "Entities/Player.h"
 #include "GameWorld.h"
+#include "GUI.h"
 
 using namespace std;
 using namespace sf;
@@ -54,9 +55,12 @@ int main()
 	entities.push_back(planet);
 
 	//Player
-	entities.push_back(new Player(planetX, planetY - 100, 1.00f, "S-RIGHT"));
+	Player* player = new Player(planetX, planetY - 100, 1.00f, "S-RIGHT");
+	entities.push_back(player);
 
-	bool paused = false;
+	//GUI
+	GUI gui(&window, player);
+
 	while(window.isOpen())
 	{
 		Event event;
@@ -65,9 +69,9 @@ int main()
 			if(event.type == Event::Closed)
 				window.close();
 			if(event.type == Event::KeyPressed && event.key.code == Keyboard::Return)
-				paused = !paused;
+				gameWorld.pause();
 		}
-		if(!paused)
+		if(!gameWorld.paused)
 		{
 			//Logic
 			world.Step(1/60.f, 8, 3);
@@ -87,6 +91,7 @@ int main()
 		window.draw(background);
 		for(list<Entity*>::iterator i = entities.begin(); i != entities.end(); i++)
 			(*i)->draw();
+		gui.draw();
 		window.display();
 	}
 
