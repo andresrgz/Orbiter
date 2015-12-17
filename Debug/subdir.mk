@@ -6,16 +6,19 @@
 CPP_SRCS += \
 ../GUI.cpp \
 ../GameWorld.cpp \
+../Scene.cpp \
 ../main.cpp 
 
 OBJS += \
 ./GUI.o \
 ./GameWorld.o \
+./Scene.o \
 ./main.o 
 
 CPP_DEPS += \
 ./GUI.d \
 ./GameWorld.d \
+./Scene.d \
 ./main.d 
 
 

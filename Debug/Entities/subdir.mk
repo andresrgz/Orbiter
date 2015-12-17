@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../Entities/Bullet.cpp \
 ../Entities/Entity.cpp \
 ../Entities/GameContactListener.cpp \
+../Entities/Item.cpp \
 ../Entities/Planet.cpp \
 ../Entities/Player.cpp 
 
@@ -16,6 +17,7 @@ OBJS += \
 ./Entities/Bullet.o \
 ./Entities/Entity.o \
 ./Entities/GameContactListener.o \
+./Entities/Item.o \
 ./Entities/Planet.o \
 ./Entities/Player.o 
 
@@ -24,6 +26,7 @@ CPP_DEPS += \
 ./Entities/Bullet.d \
 ./Entities/Entity.d \
 ./Entities/GameContactListener.d \
+./Entities/Item.d \
 ./Entities/Planet.d \
 ./Entities/Player.d 
 

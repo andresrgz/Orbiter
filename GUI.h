@@ -13,6 +13,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include "Entities/Player.h"
+#include "GameWorld.h"
 
 using namespace sf;
 
@@ -20,10 +21,11 @@ class GUI {
 public:
 	float screenW, screenH;
 	RenderWindow* window;
+	GameWorld* world;
 	Player* player;
 	Font font, commando;
 	Text playerPoints, hp, highscore, gameover;
-	GUI(RenderWindow* window, Player* player);
+	GUI(RenderWindow* window, GameWorld* world);
 	virtual ~GUI();
 	void draw();
 };

@@ -7,9 +7,8 @@
 
 #include "GameContactListener.h"
 
-GameContactListener::GameContactListener() {
-	// TODO Auto-generated constructor stub
-
+GameContactListener::GameContactListener(list<Entity*>* entities) {
+	this->entities = entities;
 }
 
 GameContactListener::~GameContactListener() {

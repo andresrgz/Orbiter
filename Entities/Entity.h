@@ -25,6 +25,7 @@ enum _entityCategory{
 	PLANET = 0x0002,
 	ASTEROID = 0x0004,
 	BULLET = 0x0008,
+	ITEM = 0x00010,
 };
 
 class Entity : public Sprite{

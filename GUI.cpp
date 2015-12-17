@@ -7,8 +7,9 @@
 
 #include "GUI.h"
 
-GUI::GUI(RenderWindow* window, Player* player) {
+GUI::GUI(RenderWindow* window, GameWorld* world) {
 	this->window = window;
+	this->world = world;
 	this->player = player;
 	this->font.loadFromFile("assets/slkscr.ttf");
 	this->commando.loadFromFile("assets/commando.ttf");
@@ -30,7 +31,7 @@ GUI::GUI(RenderWindow* window, Player* player) {
 	highscore.setCharacterSize(24);
 	highscore.setColor(Color::White);
 	highscore.setString("New Highscore");
-	highscore.setPosition(screenW/2.0f, screenH/2.0f);
+	highscore.setPosition(screenW/2.0f - 180, screenH/2.0f - 60);
 
 	gameover.setFont(commando);
 	gameover.setCharacterSize(82);
@@ -45,7 +46,17 @@ GUI::~GUI() {
 
 void GUI::draw()
 {
-	if(player->hp != 0)
+	for(list<Entity*>::iterator i = world->entities->begin(); i != world->entities->end(); i++)
+	{
+		Entity* entity = *i;
+		if(entity->getType() == "Player")
+		{
+			player = (Player*)entity;
+			break;
+		}
+	}
+
+	if(!world->gameover)
 	{
 		int points = player->points;
 		ostringstream pointsString;

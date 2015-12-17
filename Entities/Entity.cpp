@@ -89,6 +89,9 @@ void Entity::initTextures()
 
 	/*Bullets*/
 	addTexture("Bullet", "assets/bullet.png");
+
+	/*Items*/
+	addTexture("Health", "assets/health.png");
 }
 
 void Entity::addTexture(string textureKey, string path)

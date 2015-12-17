@@ -10,22 +10,13 @@
 GameWorld::GameWorld(list<Entity*>* entities) {
 	srand(time(NULL));
 	this->entities = entities;
+	this->gameover = false;
 	this->paused = false;
 	this->asteroidCount = 0;
-	this->maxAsteroids = 100;
+	this->maxAsteroids = 0;
 
 	this->screenW = VideoMode::getDesktopMode().width;
 	this->screenH = VideoMode::getDesktopMode().height;
-
-	for(list<Entity*>::iterator i = entities->begin(); i != entities->end(); i++)
-	{
-		Entity* entity = *i;
-		if(entity->getType() == "Player")
-		{
-			player = (Player*)entity;
-			break;
-		}
-	}
 }
 
 GameWorld::~GameWorld() {
@@ -34,13 +25,16 @@ GameWorld::~GameWorld() {
 
 void GameWorld::pause()
 {
-	paused = !paused;
-	Entity::paused = !Entity::paused;
+	if(!gameover)
+	{
+		paused = !paused;
+		Entity::paused = !Entity::paused;
+	}
 }
 
 void GameWorld::spawnAsteroids()
 {
-	if(asteroidCount < maxAsteroids)
+	if(asteroidCount < maxAsteroids && !gameover)
 	{
 		/*Position*/
 		float posX, posY;
@@ -105,6 +99,16 @@ void GameWorld::clean()
 
 			if(posX > screenW + 1000 || posY > screenH + 1000)
 				entity->deleteEntity();
+		}
+
+
+		if(entity->getType() == "Player")
+		{
+			if(((Player*)entity)->hp == 0)
+			{
+				entity->deleteEntity();
+				gameover = true;
+			}
 		}
 
 		if(entity->deleteFlag)

@@ -22,10 +22,9 @@
 
 class GameWorld {
 public:
-	bool paused;
+	bool gameover, paused;
 	int asteroidCount, maxAsteroids;
 	float screenW, screenH;
-	Player* player;
 	list<Entity*>* entities;
 	GameWorld(list<Entity*>* entities);
 	virtual ~GameWorld();

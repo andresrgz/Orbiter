@@ -11,10 +11,12 @@
 #include "Entity.h"
 #include "Asteroid.h"
 #include "Bullet.h"
+#include "Item.h"
 
 class GameContactListener : public b2ContactListener{
 public:
-	GameContactListener();
+	list<Entity*>* entities;
+	GameContactListener(list<Entity*>* entities);
 	virtual ~GameContactListener();
 	void BeginContact(b2Contact* contact);
 	void EndContact(b2Contact* contact);

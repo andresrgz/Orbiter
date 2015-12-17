@@ -31,5 +31,5 @@ Asteroid::Asteroid(float x, float y, float scale, string textureKey) : Entity(x,
 }
 
 Asteroid::~Asteroid() {
-	// TODO Auto-generated destructor stub
+
 }

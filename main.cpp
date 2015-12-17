@@ -18,6 +18,7 @@
 #include "Entities/GameContactListener.h"
 #include "Entities/Player.h"
 #include "GameWorld.h"
+#include "Scene.h"
 #include "GUI.h"
 
 using namespace std;
@@ -33,33 +34,16 @@ int main()
 	b2Vec2 gravity(0.0f, 0.0f);
 	b2World world(gravity);
 
-	GameContactListener gameContactListener;
-	world.SetContactListener(&gameContactListener);
-
-	//Background
-	Texture backgroundTexture;
-	backgroundTexture.loadFromFile("assets/background.png");
-	Sprite background;
-	background.setTexture(backgroundTexture);
-
 	//Entities
 	list<Entity*> entities;
 	Entity::setContext(&world, &window, &entities);
+
+	GameContactListener gameContactListener(&entities);
+	world.SetContactListener(&gameContactListener);
+
 	GameWorld gameWorld(&entities);
-
-	//Planets
-	float planetX = window.getSize().x/2.f;
-	float planetY = window.getSize().y/2.f;
-	Planet* planet = new Planet(planetX, planetY, 0.25f, "Planet1");
-	planet->setGravityForce(1000.0f);
-	entities.push_back(planet);
-
-	//Player
-	Player* player = new Player(planetX, planetY - 100, 1.00f, "S-RIGHT");
-	entities.push_back(player);
-
-	//GUI
-	GUI gui(&window, player);
+	Scene scene(&window, &gameWorld, &entities);
+	scene.createScene(0);
 
 	while(window.isOpen())
 	{
@@ -73,25 +57,11 @@ int main()
 		}
 		if(!gameWorld.paused)
 		{
-			//Logic
 			world.Step(1/60.f, 8, 3);
-			gameWorld.spawnAsteroids();
-			gameWorld.clean();
-			for(list<Entity*>::iterator i = entities.begin(); i != entities.end(); i++)
-			{
-				Entity* entity = *i;
-				if(entity->getType() == "Planet")
-					((Planet*)entity)->step();
-				else if(entity->getType() == "Player")
-					((Player*)entity)->move();
-			}
+			scene.step();
 		}
-		//Drawing
 		window.clear(Color::Black);
-		window.draw(background);
-		for(list<Entity*>::iterator i = entities.begin(); i != entities.end(); i++)
-			(*i)->draw();
-		gui.draw();
+		scene.draw();
 		window.display();
 	}
 
