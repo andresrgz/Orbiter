@@ -69,6 +69,16 @@ void GameContactListener::BeginContact(b2Contact* contact)
 	{
 		entityB->deleteEntity();
 	}
+
+	//Contact between bullet and planet
+	if(entityA->getType() == "Bullet" && entityB->getType() == "Planet")
+	{
+		entityA->deleteEntity();
+	}
+	else if(entityB->getType() == "Bullet" && entityA->getType() == "Planet")
+	{
+		entityB->deleteEntity();
+	}
 }
 
 void GameContactListener::EndContact(b2Contact* contact)

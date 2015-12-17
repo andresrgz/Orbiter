@@ -21,17 +21,25 @@
 
 class Scene {
 public:
-	int sceneID;
+	Clock clock;
+	float lastTime;
+	int sceneID, arrowIndex;
+	float screenW, screenH;
 	GUI* gui;
 	RenderWindow* window;
 	GameWorld* world;
 	list<Entity*>* entities;
-	Texture backgroundTexture;
+	Texture backgroundTexture, arrowTexture;
+	Sprite arrow;
 	Sprite background;
+	Font slkscr, commando;
+	Text logo, start, highscores, quit, howTo, instructions;
+	Text levelSelection, level1, level2, level3;
 	Scene(RenderWindow* window, GameWorld* world, list<Entity*>* entities);
 	virtual ~Scene();
 	void createScene(int sceneID);
 	void step();
+	void menuInput();
 	void draw();
 };
 

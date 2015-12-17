@@ -22,7 +22,7 @@
 
 class GameWorld {
 public:
-	bool gameover, paused;
+	bool gameover, gameStarted, paused;
 	int asteroidCount, maxAsteroids;
 	float screenW, screenH;
 	list<Entity*>* entities;

@@ -11,6 +11,7 @@ GameWorld::GameWorld(list<Entity*>* entities) {
 	srand(time(NULL));
 	this->entities = entities;
 	this->gameover = false;
+	this->gameStarted = false;
 	this->paused = false;
 	this->asteroidCount = 0;
 	this->maxAsteroids = 0;
@@ -25,7 +26,7 @@ GameWorld::~GameWorld() {
 
 void GameWorld::pause()
 {
-	if(!gameover)
+	if(gameStarted && !gameover)
 	{
 		paused = !paused;
 		Entity::paused = !Entity::paused;
