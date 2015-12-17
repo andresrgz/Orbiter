@@ -16,6 +16,9 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 	this->jumpForce = 7.f;
 	this->facingAngle = 0;
 	this->jumpAngle = 0;
+	this->referenceAngle = 9.0*b2_pi/180;
+	this->gunAngle = referenceAngle;
+	this->relativeAngle = 0;
 
 	this->currentPlanet = NULL;
 	this->numFootContacts = 0;
@@ -32,6 +35,8 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 
 	//Fixture definitions
 	fixtureDef.shape = &playerShape;
+	fixtureDef.filter.categoryBits = PLAYER1;
+	fixtureDef.filter.maskBits = ASTEROID | PLANET;
 	body->CreateFixture(&fixtureDef);
 
 	//Foot sensor
@@ -75,6 +80,16 @@ void Player::setCurrentPlanet()
 	}
 }
 
+void Player::setGunAngle(float relativeAngle)
+{
+	this->gunAngle = relativeAngle + facingAngle;
+}
+
+float Player::getGunAngle()
+{
+	return gunAngle;
+}
+
 //Gets the position of the end of the gun in b2World coordinates.
 //All angles are in radians.
 //All offset values are with respect to the player's center.
@@ -88,12 +103,12 @@ b2Vec2 Player::getGunPosition()
 
 	if(textureKey == "S-LEFT" || textureKey == "R-LEFT")
 	{
-		offsetAngle+=9.0*b2_pi/180;
+		offsetAngle+=gunAngle;
 		x_offset*=-1;
 		y_offset*=-1;
 	}
 	else
-		offsetAngle-=9.0*b2_pi/180;
+		offsetAngle-=gunAngle;
 
 	x_offset *= distanceFromPlayer*cos(offsetAngle);
 	y_offset *= distanceFromPlayer*sin(offsetAngle);
@@ -167,12 +182,21 @@ void Player::move()
 	}
 
 	if(Keyboard::isKeyPressed(Keyboard::W) && numFootContacts >= 1)
-	{
 		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
-	}
 
 	if(Keyboard::isKeyPressed(Keyboard::Space))
 		shoot();
+
+	if(Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Right))
+	{
+		relativeAngle += 0.1;
+		this->setGunAngle(relativeAngle);
+	}
+	else if(Keyboard::isKeyPressed(Keyboard::Down) || Keyboard::isKeyPressed(Keyboard::Left))
+	{
+		relativeAngle -= 0.1;
+		this->setGunAngle(relativeAngle);
+	}
 }
 
 void Player::shoot()

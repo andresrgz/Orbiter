@@ -23,6 +23,8 @@ Asteroid::Asteroid(float x, float y, float scale, string textureKey) : Entity(x,
 	//Fixture definitions
 	fixtureDef.shape = &asteroidShape;
 	fixtureDef.restitution = 0.2f;
+	fixtureDef.filter.categoryBits = ASTEROID;
+	fixtureDef.filter.maskBits = PLAYER1 | ASTEROID | PLANET | BULLET;
 	body->CreateFixture(&fixtureDef);
 }
 

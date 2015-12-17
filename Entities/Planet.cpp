@@ -22,6 +22,8 @@ Planet::Planet(float x, float y, float scale, string textureKey) : Entity(x, y, 
 
 	//Fixture definitions
 	this->fixtureDef.shape = &planetShape;
+	fixtureDef.filter.categoryBits = PLANET;
+	fixtureDef.filter.maskBits = PLAYER1 | ASTEROID | BULLET;
 	this->body->CreateFixture(&fixtureDef);
 }
 

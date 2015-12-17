@@ -20,6 +20,9 @@ Entity::Entity(float x, float y, float scale, string textureKey) {
 	this->bodyDef.position = b2Vec2(x/SCALE, y/SCALE);
 	this->setScale(scale, scale);
 
+	//Store reference to this entity in fixture
+	this->fixtureDef.userData = this;
+
 	//Animation variables
 	this->frames = 0;
 	this->animationRate = 5;

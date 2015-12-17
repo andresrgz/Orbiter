@@ -11,7 +11,7 @@ GameWorld::GameWorld(list<Entity*>* entities) {
 	srand(time(NULL));
 	this->entities = entities;
 	this->asteroidCount = 0;
-	this->maxAsteroids = 0;
+	this->maxAsteroids = 1;
 
 	this->screenW = VideoMode::getDesktopMode().width;
 	this->screenH = VideoMode::getDesktopMode().height;
@@ -50,8 +50,8 @@ void GameWorld::spawnAsteroids()
 		textureKey << "Asteroid" << asteroidNum;
 
 		/*Force*/
-		float forceX = pow(-1, rand()%2)*(rand()%500 + 300);
-		float forceY = pow(-1, rand()%2)*(rand()%500 + 300);
+		float forceX = pow(-1, rand()%2)*(rand()%100 + 10);
+		float forceY = pow(-1, rand()%2)*(rand()%100 + 10);
 
 		//Makes sure that the force is always applied into the screen
 		if((posX >= screenW/2.0f && forceX >= 0) || (posX < screenW/2.0f && forceX < 0) )

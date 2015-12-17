@@ -20,6 +20,13 @@
 using namespace std;
 using namespace sf;
 
+enum _entityCategory{
+	PLAYER1 = 0x0001,
+	PLANET = 0x0002,
+	ASTEROID = 0x0004,
+	BULLET = 0x0008,
+};
+
 class Entity : public Sprite{
 private:
 	static void initTextures();

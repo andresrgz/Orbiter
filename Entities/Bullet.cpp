@@ -27,6 +27,8 @@ Bullet::Bullet(Player* owner) : Entity(0.f, 0.f, 1.0f, "Bullet") {
 
 	//Fixture definitions
 	fixtureDef.shape = &bulletShape;
+	fixtureDef.filter.categoryBits = BULLET;
+	fixtureDef.filter.maskBits = ASTEROID | PLANET;
 	body->CreateFixture(&fixtureDef);
 }
 
