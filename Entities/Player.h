@@ -16,11 +16,10 @@ class Planet;
 
 class Player : public Entity{
 public:
-	int numFootContacts;
+	bool jumpEnabled, gunEnabled;
 	float movementForce, maxSpeed, jumpForce;
 	float facingAngle, jumpAngle, gunAngle, referenceAngle, relativeAngle;
 	b2Vec2 movementVec, jumpVec;
-	b2Fixture* footSensorFixture;
 	Planet* currentPlanet;
 	Player(float x, float y, float scale, string textureKey);
 	virtual ~Player();

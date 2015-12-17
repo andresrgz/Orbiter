@@ -44,8 +44,10 @@ public:
 	b2Body* body;
 	b2BodyDef bodyDef;
 	b2FixtureDef fixtureDef;
+	bool deleteFlag;
 	Entity(float x, float y, float scale, string textureKey);
 	virtual ~Entity();
+	void deleteEntity();
 	static void setContext(b2World* worldPtr, RenderWindow* windowPtr, list<Entity*>* entitiesPtr);
 	string getType();
 	b2Body* getBody();

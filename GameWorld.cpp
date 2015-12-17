@@ -11,7 +11,7 @@ GameWorld::GameWorld(list<Entity*>* entities) {
 	srand(time(NULL));
 	this->entities = entities;
 	this->asteroidCount = 0;
-	this->maxAsteroids = 1;
+	this->maxAsteroids = 2;
 
 	this->screenW = VideoMode::getDesktopMode().width;
 	this->screenH = VideoMode::getDesktopMode().height;
@@ -74,6 +74,7 @@ void GameWorld::clean()
 	for(list<Entity*>::iterator i = entities->begin(); i != entities->end(); i++)
 	{
 		Entity* entity = *i;
+
 		if(entity->getType() == "Asteroid" || entity->getType() == "Bullet")
 		{
 			float posX = entity->getPosition().x;
@@ -86,13 +87,17 @@ void GameWorld::clean()
 				posY*=-1;
 
 			if(posX > screenW + 1000 || posY > screenH + 1000)
-			{
-				entities->erase(i++);
-				delete entity;
-
-				if(entity->getType() == "Asteroid")
-					asteroidCount--;
-			}
+				entity->deleteEntity();
 		}
+
+		if(entity->deleteFlag)
+		{
+			if(entity->getType() == "Asteroid")
+				asteroidCount--;
+
+			entities->erase(i++);
+			delete entity;
+		}
+
 	}
 }

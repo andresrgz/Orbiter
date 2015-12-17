@@ -16,6 +16,7 @@ map<string, vector<Texture*> > Entity::textures;
 
 Entity::Entity(float x, float y, float scale, string textureKey) {
 	this->type = "Entity";
+	this->deleteFlag = false;
 	this->body = NULL;
 	this->bodyDef.position = b2Vec2(x/SCALE, y/SCALE);
 	this->setScale(scale, scale);
@@ -40,6 +41,12 @@ Entity::Entity(float x, float y, float scale, string textureKey) {
 Entity::~Entity()
 {
 	world->DestroyBody(body);
+}
+
+void Entity::deleteEntity()
+{
+	if(!deleteFlag)
+		deleteFlag = true;
 }
 
 void Entity::setContext(b2World* worldPtr, RenderWindow* windowPtr, list<Entity*>* entitiesPtr)

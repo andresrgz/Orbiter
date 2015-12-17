@@ -1,7 +1,8 @@
 main.o: ../main.cpp ../Entities/Entity.h ../Entities/Planet.h \
  ../Entities/Entity.h ../Entities/Player.h ../Entities/Planet.h \
- ../Entities/Bullet.h ../Entities/Asteroid.h ../Entities/Player.h \
- ../Entities/PlanetContactListener.h ../GameWorld.h
+ ../Entities/Bullet.h ../Entities/Asteroid.h \
+ ../Entities/GameContactListener.h ../Entities/Asteroid.h \
+ ../Entities/Player.h ../GameWorld.h
 
 ../Entities/Entity.h:
 
@@ -17,8 +18,10 @@ main.o: ../main.cpp ../Entities/Entity.h ../Entities/Planet.h \
 
 ../Entities/Asteroid.h:
 
-../Entities/Player.h:
+../Entities/GameContactListener.h:
 
-../Entities/PlanetContactListener.h:
+../Entities/Asteroid.h:
+
+../Entities/Player.h:
 
 ../GameWorld.h:

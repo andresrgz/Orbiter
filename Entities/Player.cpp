@@ -19,9 +19,10 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 	this->referenceAngle = 9.0*b2_pi/180;
 	this->gunAngle = referenceAngle;
 	this->relativeAngle = 0;
+	this->jumpEnabled = true;
+	this->gunEnabled = true;
 
 	this->currentPlanet = NULL;
-	this->numFootContacts = 0;
 
 	//Body definitions
 	bodyDef.type = b2_dynamicBody;
@@ -38,13 +39,6 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 	fixtureDef.filter.categoryBits = PLAYER1;
 	fixtureDef.filter.maskBits = ASTEROID | PLANET;
 	body->CreateFixture(&fixtureDef);
-
-	//Foot sensor
-	b2PolygonShape footSensorShape;
-	footSensorShape.SetAsBox(sizeX/4, sizeY/4, b2Vec2(0,-3), 0);
-	fixtureDef.isSensor = true;
-	footSensorFixture = body->CreateFixture(&fixtureDef);
-	footSensorFixture->SetUserData(this);
 }
 
 Player::~Player() {
@@ -181,11 +175,17 @@ void Player::move()
 			body->ApplyForce(movementVec, body->GetWorldCenter(), true);
 	}
 
-	if(Keyboard::isKeyPressed(Keyboard::W) && numFootContacts >= 1)
+	if(Keyboard::isKeyPressed(Keyboard::W) && jumpEnabled)
 		body->ApplyLinearImpulse(jumpVec, body->GetWorldCenter(), true);
 
-	if(Keyboard::isKeyPressed(Keyboard::Space))
+	if(Keyboard::isKeyPressed(Keyboard::Space) && gunEnabled)
+	{
 		shoot();
+		gunEnabled = false;
+	}
+
+	if(!Keyboard::isKeyPressed(Keyboard::Space))
+		gunEnabled = true;
 
 	if(Keyboard::isKeyPressed(Keyboard::Up) || Keyboard::isKeyPressed(Keyboard::Right))
 	{

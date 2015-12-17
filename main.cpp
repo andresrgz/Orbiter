@@ -15,8 +15,8 @@
 #include "Entities/Entity.h"
 #include "Entities/Planet.h"
 #include "Entities/Asteroid.h"
+#include "Entities/GameContactListener.h"
 #include "Entities/Player.h"
-#include "Entities/PlanetContactListener.h"
 #include "GameWorld.h"
 
 using namespace std;
@@ -32,8 +32,8 @@ int main()
 	b2Vec2 gravity(0.0f, 0.0f);
 	b2World world(gravity);
 
-	PlanetContactListener planetContactListener;
-	world.SetContactListener(&planetContactListener);
+	GameContactListener gameContactListener;
+	world.SetContactListener(&gameContactListener);
 
 	//Background
 	Texture backgroundTexture;
