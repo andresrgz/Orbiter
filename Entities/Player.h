@@ -16,6 +16,7 @@ class Planet;
 
 class Player : public Entity{
 public:
+	int points, maxHP, hp;
 	bool jumpEnabled, gunEnabled;
 	float movementForce, maxSpeed, jumpForce;
 	float facingAngle, jumpAngle, gunAngle, referenceAngle, relativeAngle;
@@ -23,6 +24,7 @@ public:
 	Planet* currentPlanet;
 	Player(float x, float y, float scale, string textureKey);
 	virtual ~Player();
+	void applyDamage(int damage);
 	void setCurrentPlanet();
 	void setGunAngle(float relativeAngle);
 	float getGunAngle();

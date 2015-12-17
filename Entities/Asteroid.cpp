@@ -26,6 +26,8 @@ Asteroid::Asteroid(float x, float y, float scale, string textureKey) : Entity(x,
 	fixtureDef.filter.categoryBits = ASTEROID;
 	fixtureDef.filter.maskBits = PLAYER1 | ASTEROID | PLANET | BULLET;
 	body->CreateFixture(&fixtureDef);
+
+	damage = nearbyint(scale*6);
 }
 
 Asteroid::~Asteroid() {

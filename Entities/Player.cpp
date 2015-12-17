@@ -21,6 +21,9 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 	this->relativeAngle = 0;
 	this->jumpEnabled = true;
 	this->gunEnabled = true;
+	this->points = 0;
+	this->maxHP = 10;
+	this->hp = maxHP;
 
 	this->currentPlanet = NULL;
 
@@ -43,6 +46,13 @@ Player::Player(float x, float y, float scale, string textureKey) : Entity(x, y, 
 
 Player::~Player() {
 	// TODO Auto-generated destructor stub
+}
+
+void Player::applyDamage(int damage)
+{
+	hp -= damage;
+	if(hp < 0)
+		hp = 0;
 }
 
 void Player::setCurrentPlanet()

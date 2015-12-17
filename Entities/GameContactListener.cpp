@@ -24,11 +24,17 @@ void GameContactListener::BeginContact(b2Contact* contact)
 	//Contact between asteroid and bullet
 	if(entityA->getType() == "Asteroid" && entityB->getType() == "Bullet")
 	{
+		Bullet* bullet = (Bullet*)entityB;
+		bullet->owner->points += 10;
+
 		entityA->deleteEntity();
 		entityB->deleteEntity();
 	}
 	else if(entityB->getType() == "Asteroid" && entityA->getType() == "Bullet")
 	{
+		Bullet* bullet = (Bullet*)entityA;
+		bullet->owner->points += 10;
+
 		entityA->deleteEntity();
 		entityB->deleteEntity();
 	}
@@ -41,6 +47,16 @@ void GameContactListener::BeginContact(b2Contact* contact)
 	else if(entityB->getType() == "Player" && entityA->getType() == "Planet")
 	{
 		((Player*)entityB)->jumpEnabled = true;
+	}
+
+	//Contact between player and asteroid
+	if(entityA->getType() == "Player" && entityB->getType() == "Asteroid")
+	{
+		((Player*)entityA)->applyDamage(((Asteroid*)entityB)->damage);
+	}
+	else if(entityB->getType() == "Player" && entityA->getType() == "Asteroid")
+	{
+		((Player*)entityB)->applyDamage(((Asteroid*)entityA)->damage);
 	}
 }
 

@@ -13,6 +13,7 @@
 
 class Asteroid : public Entity{
 public:
+	int damage;
 	Asteroid(float x, float y, float scale, string textureKey);
 	virtual ~Asteroid();
 };
