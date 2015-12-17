@@ -27,7 +27,7 @@ using namespace sf;
 int main()
 {
 	//Window settings
-	RenderWindow window(VideoMode::getDesktopMode(), "Orbiter");
+	RenderWindow window(VideoMode::getDesktopMode(), "Orbiter", Style::Fullscreen);
 	window.setFramerateLimit(60);
 
 	//World settings

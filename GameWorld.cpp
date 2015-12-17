@@ -105,9 +105,20 @@ void GameWorld::clean()
 
 		if(entity->getType() == "Player")
 		{
-			if(((Player*)entity)->hp == 0)
+			Player* player = (Player*)entity;
+			if(player->hp == 0)
 			{
-				entity->deleteEntity();
+				ofstream out("scores.orb", ostream::in);
+				if(!out.is_open())
+					out.open("scores.orb");
+				out.seekp(0, ios::end);
+				int saves = out.tellp()/4.0;
+				out.seekp(saves*4);
+				out.write((char*)&(player->points), 4);
+				gameover = true;
+				out.close();
+
+				player->deleteEntity();
 				gameover = true;
 			}
 		}

@@ -79,6 +79,28 @@ void GUI::draw()
 	else
 	{
 		window->draw(gameover);
+		readScores();
 	}
 }
 
+void GUI::readScores()
+{
+	/*
+	ifstream in("scores.orb");
+	in.seekg(0, ios::end);
+	int size = in.tellg()/4;
+	in.seekg(0);
+
+	for(int i = 0; i < size; i++)
+	{
+		in.seekg(i*4);
+		int* points;
+		in.read((char*)points, 4);
+		scores.push_back(*points);
+	}
+	in.close();
+
+	for(int i = 0; i < scores.size(); i++)
+		cout << scores[i] << endl;
+	*/
+}

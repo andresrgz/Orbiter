@@ -9,6 +9,8 @@
 #define GUI_H_
 
 #include <sstream>
+#include <fstream>
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -19,6 +21,7 @@ using namespace sf;
 
 class GUI {
 public:
+	vector<int> scores;
 	float screenW, screenH;
 	RenderWindow* window;
 	GameWorld* world;
@@ -28,6 +31,7 @@ public:
 	GUI(RenderWindow* window, GameWorld* world);
 	virtual ~GUI();
 	void draw();
+	void readScores();
 };
 
 #endif /* GUI_H_ */

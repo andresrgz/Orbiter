@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sstream>
+#include <fstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -31,6 +32,7 @@ public:
 	void pause();
 	void spawnAsteroids();
 	void clean();
+	void saveScore();
 };
 
 #endif /* GAMEWORLD_H_ */
